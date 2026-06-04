@@ -1,635 +1,493 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-  
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BarterFly — Uçanlarla göndər</title>
-
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  />
-
-  
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"
-  />
-
-  
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarterFly</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-
 <div id="authScreen">
-  <div class="auth-card">
+    <div class="auth-card">
 
-    
-    <div class="auth-header">
-      <div class="auth-logo">
-        
-        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="60" height="60" rx="18" fill="rgba(255,255,255,0.18)"/>
-          <g transform="translate(8,10)">
-            <path d="M6 26 L20 12 C21 11 23 11 24 12 L38 8 C40 7 41 9 40 11 L34 22 L38 24 C39 25 39 27 38 28 L32 34 C31 35 29 35 28 34 L26 30 L16 36 C14 37 12 36 12 34 L14 26 Z"
-              fill="white" opacity="0.95"/>
-            <circle cx="36" cy="32" r="4" fill="rgba(255,255,255,0.3)"/>
-            <path d="M6 30 L10 32 L6 34 L2 32 Z" fill="white" opacity="0.5"/>
-          </g>
-        </svg>
-      </div>
-      <div class="auth-logo-text">BarterFly</div>
-      <div class="auth-logo-sub">Uçanlarla göndər — ağıllı yük platformu</div>
+        <div class="auth-header">
+            <div class="logo-icon">
+                <svg width="50" height="50" viewBox="0 0 60 60" fill="none">
+                    <rect width="60" height="60" rx="18" fill="rgba(255,255,255,0.18)"/>
+                    <g transform="translate(8,10)">
+                        <path d="M6 26 L20 12 C21 11 23 11 24 12 L38 8 C40 7 41 9 40 11 L34 22 L38 24 C39 25 39 27 38 28 L32 34 C31 35 29 35 28 34 L26 30 L16 36 C14 37 12 36 12 34 L14 26 Z" fill="white"/>
+                        <path d="M6 30 L10 32 L6 34 L2 32 Z" fill="white" opacity="0.5"/>
+                    </g>
+                </svg>
+            </div>
+            <h1>BarterFly</h1>
+            <p>Uçanlarla göndər</p>
+        </div>
+
+        <div class="auth-tabs">
+            <div class="auth-tab active" id="atab-login" onclick="switchAuthTab('login')">Daxil ol</div>
+            <div class="auth-tab" id="atab-signup" onclick="switchAuthTab('signup')">Qeydiyyat</div>
+        </div>
+
+        <div class="auth-body" id="loginForm">
+            <div class="form-group">
+                <label>E-poçt</label>
+                <input type="email" id="lEmail" placeholder="sizin@gmail.com">
+            </div>
+            <div class="form-group">
+                <label>Şifrə</label>
+                <input type="password" id="lPass" placeholder="••••••••">
+            </div>
+            <button class="btn btn-primary" onclick="doLogin()">Daxil ol</button>
+            <p class="hint">Nümunə: demo@test.com / 123456</p>
+            <p class="switch-text">Hesabın yoxdur? <a onclick="switchAuthTab('signup')">Qeydiyyat</a></p>
+        </div>
+
+        <div class="auth-body" id="signupForm" style="display:none">
+            <div class="warning-box">
+                <i class="ti ti-shield-check"></i>
+                Şəxsiyyət vəsiqənizi yükləyin. Məlumatlar yalnız təhlükəsizlik məqsədilə saxlanılır.
+            </div>
+
+            <div class="two-col">
+                <div class="form-group">
+                    <label>Ad</label>
+                    <input type="text" id="sAd" placeholder="Əli">
+                </div>
+                <div class="form-group">
+                    <label>Soyad</label>
+                    <input type="text" id="sSoyad" placeholder="Əliyev">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>E-poçt <span style="font-size:11px;color:var(--blue);font-weight:400">(yalnız @gmail.com)</span></label>
+                <input type="email" id="sEmail" placeholder="sizin@gmail.com">
+            </div>
+
+            <div class="form-group">
+                <label>Telefon</label>
+                <input type="tel" id="sPhone" placeholder="+994 50 000 00 00" oninput="validatePhone(this)" maxlength="17">
+            </div>
+
+            <div class="two-col">
+                <div class="form-group">
+                    <label>Şifrə</label>
+                    <input type="password" id="sPass" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label>Şifrə (təkrar)</label>
+                    <input type="password" id="sPass2" placeholder="••••••••">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Şəxsiyyət vəsiqəsi — ön üz <span class="required">*</span></label>
+                <div class="upload-box" id="ua1"
+                    ondragover="dragOver(event,'ua1')"
+                    ondragleave="dragLeave('ua1')"
+                    ondrop="dropFile(event,'idFront','ua1','prev1')">
+                    <input type="file" accept="image/*,.pdf" onchange="fileChosen(this,'idFront','ua1','prev1')">
+                    <i class="ti ti-id"></i>
+                    <p>Şəkli buraya sürükləyin və ya seçin</p>
+                    <span>JPG, PNG, PDF — maks. 5MB</span>
+                </div>
+                <div class="file-preview" id="prev1">
+                    <i class="ti ti-circle-check"></i>
+                    <span id="prev1name"></span>
+                    <i class="ti ti-x" onclick="clearFile('idFront','ua1','prev1')"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Şəxsiyyət vəsiqəsi — arxa üz <span class="required">*</span></label>
+                <div class="upload-box" id="ua2"
+                    ondragover="dragOver(event,'ua2')"
+                    ondragleave="dragLeave('ua2')"
+                    ondrop="dropFile(event,'idBack','ua2','prev2')">
+                    <input type="file" accept="image/*,.pdf" onchange="fileChosen(this,'idBack','ua2','prev2')">
+                    <i class="ti ti-id-badge-2"></i>
+                    <p>Şəkli buraya sürükləyin və ya seçin</p>
+                    <span>JPG, PNG, PDF — maks. 5MB</span>
+                </div>
+                <div class="file-preview" id="prev2">
+                    <i class="ti ti-circle-check"></i>
+                    <span id="prev2name"></span>
+                    <i class="ti ti-x" onclick="clearFile('idBack','ua2','prev2')"></i>
+                </div>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="agreeTerms">
+                    Şəxsi məlumatlarımın işlənməsinə razıyam.
+                </label>
+            </div>
+
+            <button class="btn btn-primary" onclick="doSignup()">Hesab yarat</button>
+            <p class="switch-text">Hesabın var? <a onclick="switchAuthTab('login')">Daxil ol</a></p>
+        </div>
+
     </div>
-
-    
-    <div class="auth-tabs">
-      <div class="auth-tab active" id="atab-login" onclick="switchAuthTab('login')">
-        Daxil ol
-      </div>
-      <div class="auth-tab" id="atab-signup" onclick="switchAuthTab('signup')">
-        Qeydiyyat
-      </div>
-    </div>
-
-    
-    <div class="auth-body" id="loginForm">
-
-      <div class="fg">
-        <div class="flabel">E-poçt</div>
-        <div class="input-icon-wrap">
-          <i class="ti ti-mail input-icon"></i>
-          <input class="finput" id="lEmail" type="email" placeholder="sizin@email.com" />
-        </div>
-      </div>
-
-      <div class="fg">
-        <div class="flabel">Şifrə</div>
-        <div class="input-icon-wrap">
-          <i class="ti ti-lock input-icon"></i>
-          <input class="finput" id="lPass" type="password" placeholder="••••••••" />
-        </div>
-      </div>
-
-      <button class="btn btn-primary btn-full" onclick="doLogin()">
-        <i class="ti ti-login"></i> Daxil ol
-      </button>
-
-      
-      
-
-      <div class="auth-switch">
-        Hesabın yoxdur?
-        <a onclick="switchAuthTab('signup')">Qeydiyyatdan keç</a>
-      </div>
-    </div>
-
-    
-    <div class="auth-body" id="signupForm" style="display:none">
-
-      
-      <div class="info-banner">
-        <i class="ti ti-shield-check"></i>
-        <div>
-          Təhlükəsizlik üçün şəxsiyyət vəsiqənizin şəklini yükləyin.
-          Məlumatlarınız şifrələnərək saxlanılır və yalnız mübahisəli
-          hallarda istifadə edilir.
-        </div>
-      </div>
-
-      
-      <div class="form-row">
-        <div class="fg">
-          <div class="flabel">Ad</div>
-          <input class="finput" id="sAd" placeholder="Əli" />
-        </div>
-        <div class="fg">
-          <div class="flabel">Soyad</div>
-          <input class="finput" id="sSoyad" placeholder="Əliyev" />
-        </div>
-      </div>
-
-      
-      <div class="fg">
-        <div class="flabel">E-poçt</div>
-        <div class="input-icon-wrap">
-          <i class="ti ti-mail input-icon"></i>
-          <input class="finput" id="sEmail" type="email" placeholder="sizin@email.com" />
-        </div>
-      </div>
-
-      
-      <div class="fg">
-        <div class="flabel">Telefon</div>
-        <div class="input-icon-wrap">
-          <i class="ti ti-phone input-icon"></i>
-          <input class="finput" id="sPhone" type="tel" placeholder="+994 50 000 00 00" oninput="validatePhone(this)" maxlength="17" />
-        </div>
-      </div>
-
-      
-      <div class="form-row">
-        <div class="fg">
-          <div class="flabel">Şifrə</div>
-          <input class="finput" id="sPass" type="password" placeholder="••••••••" />
-        </div>
-        <div class="fg">
-          <div class="flabel">Şifrə (təkrar)</div>
-          <input class="finput" id="sPass2" type="password" placeholder="••••••••" />
-        </div>
-      </div>
-
-      
-      <div class="fg">
-        <div class="flabel">
-          Şəxsiyyət vəsiqəsi — ön üz
-          <span style="color:var(--danger)">*</span>
-        </div>
-        <div class="upload-area" id="ua1"
-          ondragover="dragOver(event,'ua1')"
-          ondragleave="dragLeave('ua1')"
-          ondrop="dropFile(event,'idFront','ua1','prev1')">
-          <input type="file" accept="image/*,.pdf"
-            onchange="fileChosen(this,'idFront','ua1','prev1')" />
-          <div class="upload-icon"><i class="ti ti-id"></i></div>
-          <div class="upload-text">Şəkli buraya sürükleyin və ya seçin</div>
-          <div class="upload-hint">JPG, PNG, PDF — maks. 5 MB</div>
-        </div>
-       
-        <div class="upload-preview" id="prev1">
-          <i class="ti ti-circle-check" style="font-size:16px"></i>
-          <span id="prev1name"></span>
-          <span onclick="clearFile('idFront','ua1','prev1')"
-            style="cursor:pointer; margin-left:auto; opacity:.7">✕</span>
-        </div>
-      </div>
-
-     
-      <div class="fg">
-        <div class="flabel">
-          Şəxsiyyət vəsiqəsi — arxa üz
-          <span style="color:var(--danger)">*</span>
-        </div>
-        <div class="upload-area" id="ua2"
-          ondragover="dragOver(event,'ua2')"
-          ondragleave="dragLeave('ua2')"
-          ondrop="dropFile(event,'idBack','ua2','prev2')">
-          <input type="file" accept="image/*,.pdf"
-            onchange="fileChosen(this,'idBack','ua2','prev2')" />
-          <div class="upload-icon"><i class="ti ti-id-badge-2"></i></div>
-          <div class="upload-text">Şəkli buraya sürükleyin və ya seçin</div>
-          <div class="upload-hint">JPG, PNG, PDF — maks. 5 MB</div>
-        </div>
-        <div class="upload-preview" id="prev2">
-          <i class="ti ti-circle-check" style="font-size:16px"></i>
-          <span id="prev2name"></span>
-          <span onclick="clearFile('idBack','ua2','prev2')"
-            style="cursor:pointer; margin-left:auto; opacity:.7">✕</span>
-        </div>
-      </div>
-
-      
-      <div class="fg" style="margin-top:4px">
-        <label style="display:flex; align-items:flex-start; gap:8px;
-          font-size:13px; color:var(--text2); cursor:pointer">
-          <input type="checkbox" id="agreeTerms"
-            style="margin-top:2px; accent-color:var(--primary)" />
-          <span>
-            Şəxsi məlumatlarımın işlənməsinə razıyam.
-            Məlumatlar yalnız təhlükəsizlik məqsədilə saxlanılır.
-          </span>
-        </label>
-      </div>
-
-      <button class="btn btn-primary btn-full" style="margin-top:8px" onclick="doSignup()">
-        <i class="ti ti-user-plus"></i> Hesab yarat
-      </button>
-
-      <div class="auth-switch" style="margin-top:12px">
-        Artıq hesabın var?
-        <a onclick="switchAuthTab('login')">Daxil ol</a>
-      </div>
-    </div>
-
-  </div>
 </div>
 
 
 <div id="appScreen">
 
-  
-  <nav class="topbar">
+    <nav class="navbar">
+        <div class="nav-logo" onclick="switchTab('browse')">
+            <div class="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 44 44" fill="none">
+                    <path d="M4 34 L18 18 C19 17 21 17 22 18 L38 13 C40 12 41 14 40 16 L33 28 L37 30 C38 31 38 33 37 34 L30 41 C29 42 27 42 26 41 L24 37 L13 44 C11 45 9 44 9 42 L11 34 Z" fill="white"/>
+                </svg>
+            </div>
+            <span>BarterFly</span>
+        </div>
 
-    
-    <div class="topbar-logo" onclick="switchTab('browse')">
-      <div class="topbar-icon">
-        <svg width="22" height="22" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 34 L18 18 C19 17 21 17 22 18 L38 13 C40 12 41 14 40 16 L33 28 L37 30 C38 31 38 33 37 34 L30 41 C29 42 27 42 26 41 L24 37 L13 44 C11 45 9 44 9 42 L11 34 Z"
-            fill="white"/>
-        </svg>
-      </div>
-      <span class="topbar-name">BarterFly</span>
+        <div class="nav-right">
+            <div class="nav-stats">
+                <span><i class="ti ti-plane"></i> <strong id="flightCount">0</strong></span>
+                <span><i class="ti ti-package"></i> <strong id="reqCount">0</strong></span>
+            </div>
+            <div class="nav-user" onclick="switchTab('profile')">
+                <div class="nav-avatar" id="topbarAvatar">?</div>
+                <span id="topbarName">İstifadəçi</span>
+            </div>
+            <button class="nav-logout" onclick="doLogout()">
+                <i class="ti ti-logout"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div class="tabs">
+            <button class="tab active" id="tab-browse" onclick="switchTab('browse')">
+                <i class="ti ti-search"></i>
+                <span>Uçuşlar</span>
+            </button>
+            <button class="tab" id="tab-add" onclick="switchTab('add')">
+                <i class="ti ti-plane-departure"></i>
+                <span>Uçuş əlavə et</span>
+            </button>
+            <button class="tab" id="tab-send" onclick="switchTab('send')">
+                <i class="ti ti-send"></i>
+                <span>Əşya göndər</span>
+            </button>
+            <button class="tab" id="tab-myRequests" onclick="switchTab('myRequests')">
+                <i class="ti ti-inbox"></i>
+                <span>Tələblərim</span>
+            </button>
+            <button class="tab" id="tab-profile" onclick="switchTab('profile')">
+                <i class="ti ti-user"></i>
+                <span>Profil</span>
+            </button>
+            <button class="tab" id="tab-support" onclick="switchTab('support')">
+                <i class="ti ti-headset"></i>
+                <span>Dəstək</span>
+            </button>
+        </div>
+
+
+        <div class="panel active" id="panel-browse">
+            <h2 class="panel-title"><i class="ti ti-list-search"></i> Aktiv uçuşlar</h2>
+            <div class="filter-row">
+                <input type="text" id="fCity" placeholder="Şəhər axtar..." oninput="renderFlights()">
+                <select id="fType" onchange="renderFlights()">
+                    <option value="">Bütün əşyalar</option>
+                    <option>Sənəd</option>
+                    <option>Geyim</option>
+                    <option>Elektronika</option>
+                    <option>Ərzaq</option>
+                    <option>Dərman</option>
+                </select>
+                <select id="fSort" onchange="renderFlights()">
+                    <option value="date">Tarixə görə</option>
+                    <option value="weight">Çəkiyə görə</option>
+                    <option value="rating">Reytinqə görə</option>
+                </select>
+            </div>
+            <div id="realFlightsStatus" style="display:none;align-items:center;gap:10px;padding:10px 14px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;font-size:13px;color:#1d4ed8;margin-bottom:10px">
+                <i class="ti ti-loader-2 spin"></i> Bakı hava limanından real uçuşlar yüklənir (OpenSky API)...
+            </div>
+            <div id="flightList"></div>
+        </div>
+
+
+        <div class="panel" id="panel-add">
+            <div class="info-box">
+                <i class="ti ti-info-circle"></i>
+                Uçuşunuzu əlavə edin. Götürdüyünüz hər şeyin qanuni olduğuna əmin olun.
+            </div>
+            <h2 class="panel-title"><i class="ti ti-plane-departure"></i> Uçuş məlumatları</h2>
+            <div class="card">
+                <div class="two-col">
+                    <div class="form-group">
+                        <label>Haradan</label>
+                        <input type="text" id="aFrom" placeholder="Bakı">
+                    </div>
+                    <div class="form-group">
+                        <label>Hara</label>
+                        <input type="text" id="aTo" placeholder="İstanbul">
+                    </div>
+                    <div class="form-group">
+                        <label>Tarix</label>
+                        <input type="date" id="aDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Saat</label>
+                        <input type="time" id="aTime">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Reys nömrəsi <small>(daxil edin — məlumatlar avtomatik doldurulacaq)</small></label>
+                    <div class="input-with-btn">
+                        <input type="text" id="aTicket" placeholder="Nümunə: TK198, FZ329" oninput="clearLookupStatus()">
+                        <button class="btn btn-outline" onclick="lookupFlight()">
+                            <i class="ti ti-search"></i> Axtar
+                        </button>
+                    </div>
+                    <div id="flightLookupStatus"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Boş çəki (kq)</label>
+                    <input type="number" id="aWeight" placeholder="5" min="0.5" max="30" step="0.5">
+                </div>
+
+                <div class="form-group">
+                    <label>Hansı əşyaları apara bilərsiniz?</label>
+                    <div class="check-list" id="typeChecks">
+                        <label class="check-item"><input type="checkbox" value="Sənəd" onchange="chk(this)"> <i class="ti ti-file-text"></i> Sənəd</label>
+                        <label class="check-item"><input type="checkbox" value="Geyim" onchange="chk(this)"> <i class="ti ti-shirt"></i> Geyim</label>
+                        <label class="check-item"><input type="checkbox" value="Elektronika" onchange="chk(this)"> <i class="ti ti-device-laptop"></i> Elektronika</label>
+                        <label class="check-item"><input type="checkbox" value="Ərzaq" onchange="chk(this)"> <i class="ti ti-apple"></i> Ərzaq</label>
+                        <label class="check-item"><input type="checkbox" value="Dərman" onchange="chk(this)"> <i class="ti ti-pill"></i> Dərman</label>
+                        <label class="check-item"><input type="checkbox" value="Digər" onchange="chk(this)"> <i class="ti ti-box"></i> Digər</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Qeyd (istəyə bağlı)</label>
+                    <textarea id="aNote" rows="3" placeholder="Məs: kiçik bağlamalar götürə bilərəm..."></textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="addFlight()">
+                    <i class="ti ti-circle-plus"></i> Uçuşu əlavə et
+                </button>
+            </div>
+        </div>
+
+
+        <div class="panel" id="panel-send">
+            <div class="info-box">
+                <i class="ti ti-info-circle"></i>
+                Tələbinizi göndərin, uyğun daşıyıcı sizinlə əlaqə saxlayacaq. Qadağan olunmuş əşyaları göndərməyin!
+            </div>
+            <h2 class="panel-title"><i class="ti ti-package"></i> Göndəriş tələbi</h2>
+            <div class="card">
+                <div class="two-col">
+                    <div class="form-group">
+                        <label>Haradan</label>
+                        <input type="text" id="rFrom" placeholder="Bakı">
+                    </div>
+                    <div class="form-group">
+                        <label>Hara</label>
+                        <input type="text" id="rTo" placeholder="İstanbul">
+                    </div>
+                    <div class="form-group">
+                        <label>Əşyanın növü</label>
+                        <select id="rType">
+                            <option value="">Seçin...</option>
+                            <option>Sənəd</option>
+                            <option>Geyim</option>
+                            <option>Elektronika</option>
+                            <option>Ərzaq</option>
+                            <option>Dərman</option>
+                            <option>Digər</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Təxmini çəki (kq)</label>
+                        <input type="number" id="rWeight" placeholder="2" min="0.1" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Əşyanın təsviri</label>
+                    <textarea id="rDesc" rows="3" placeholder="Nə göndərirsiniz?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Əşyanın şəkli (istəyə bağlı)</label>
+                    <div class="upload-box" id="ua3"
+                        ondragover="dragOver(event,'ua3')"
+                        ondragleave="dragLeave('ua3')"
+                        ondrop="dropFile(event,'itemImg','ua3','prev3')">
+                        <input type="file" accept="image/*" onchange="fileChosen(this,'itemImg','ua3','prev3')">
+                        <i class="ti ti-photo"></i>
+                        <p>Şəkli buraya sürükləyin</p>
+                        <span>JPG, PNG — maks. 5MB</span>
+                    </div>
+                    <div class="file-preview" id="prev3">
+                        <i class="ti ti-circle-check"></i>
+                        <span id="prev3name"></span>
+                        <i class="ti ti-x" onclick="clearFile('itemImg','ua3','prev3')"></i>
+                    </div>
+                </div>
+
+                <button class="btn btn-success" onclick="sendRequest()">
+                    <i class="ti ti-send"></i> Tələbi göndər
+                </button>
+            </div>
+        </div>
+
+
+        <div class="panel" id="panel-myRequests">
+            <h2 class="panel-title"><i class="ti ti-inbox"></i> Göndərdiyim tələblər</h2>
+            <div id="requestList">
+                <div class="empty-state">
+                    <i class="ti ti-inbox"></i>
+                    <p>Hələ heç bir tələb göndərməmisiniz.</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel" id="panel-profile">
+            <div class="card">
+                <div class="profile-top">
+                    <div class="profile-avatar" id="profAvatar">?</div>
+                    <div>
+                        <h2 id="profName">—</h2>
+                        <p id="profEmail">—</p>
+                        <p id="profPhone"></p>
+                    </div>
+                </div>
+
+                <div class="profile-stats">
+                    <div class="stat-box">
+                        <strong id="myFlightCount">0</strong>
+                        <span>Uçuşum</span>
+                    </div>
+                    <div class="stat-box">
+                        <strong id="myReqCount">0</strong>
+                        <span>Tələbim</span>
+                    </div>
+                    <div class="stat-box">
+                        <strong id="myRating">—</strong>
+                        <span>Reytinq</span>
+                    </div>
+                </div>
+
+                <div class="id-status">
+                    <i class="ti ti-shield-check"></i>
+                    <span>Şəxsiyyət vəsiqəsi yüklənib</span>
+                    <span class="verified">✓ Təsdiqləndi</span>
+                </div>
+
+                <button class="btn btn-outline" onclick="doLogout()" style="margin-top:1rem">
+                    <i class="ti ti-logout"></i> Çıxış
+                </button>
+            </div>
+        </div>
+
+
+        <div class="panel" id="panel-support">
+            <h2 class="panel-title"><i class="ti ti-headset"></i> Dəstək Mərkəzi</h2>
+
+            <div class="info-box">
+                <i class="ti ti-info-circle"></i>
+                Hər hansı bir problem yaşayırsınızsa, aşağıdakı formu doldurun. Komandamız 24 saat ərzində sizinlə əlaqə saxlayacaq.
+            </div>
+
+            <div class="card">
+                <div class="support-contacts">
+                    <div class="support-contact-item">
+                        <i class="ti ti-mail"></i>
+                        <div>
+                            <strong>E-poçt</strong>
+                            <span>support@barterfly.az</span>
+                        </div>
+                    </div>
+                    <div class="support-contact-item">
+                        <i class="ti ti-brand-whatsapp"></i>
+                        <div>
+                            <strong>WhatsApp</strong>
+                            <span>+994 50 000 00 00</span>
+                        </div>
+                    </div>
+                    <div class="support-contact-item">
+                        <i class="ti ti-clock"></i>
+                        <div>
+                            <strong>İş saatları</strong>
+                            <span>Bazar ertəsi — Cümə, 09:00 – 18:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="panel-title" style="margin-top:0.5rem"><i class="ti ti-message"></i> Müraciət formu</h2>
+            <div class="card">
+                <div class="two-col">
+                    <div class="form-group">
+                        <label>Adınız</label>
+                        <input type="text" id="supName" placeholder="Əli Əliyev">
+                    </div>
+                    <div class="form-group">
+                        <label>E-poçt</label>
+                        <input type="email" id="supEmail" placeholder="sizin@gmail.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Mövzu</label>
+                    <select id="supSubject">
+                        <option value="">Seçin...</option>
+                        <option>Ödəniş problemi</option>
+                        <option>Daşıyıcı ilə problem</option>
+                        <option>Əşya çatdırılmadı</option>
+                        <option>Hesab problemi</option>
+                        <option>Digər</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Mesajınız</label>
+                    <textarea id="supMsg" rows="4" placeholder="Probleminizi ətraflı izah edin..."></textarea>
+                </div>
+
+                <div id="supportSuccess" class="support-success" style="display:none">
+                    <i class="ti ti-circle-check"></i>
+                    Müraciətiniz uğurla göndərildi! Tezliklə cavab veriləcək.
+                </div>
+
+                <button class="btn btn-primary" onclick="submitSupport()">
+                    <i class="ti ti-send"></i> Müraciəti göndər
+                </button>
+            </div>
+        </div>
+
     </div>
-
-    <div class="topbar-right">
-
-      
-      <div class="topbar-stats">
-        <div class="stat-pill">
-          <i class="ti ti-plane"></i>
-          <strong id="flightCount">0</strong>&nbsp;uçuş
-        </div>
-        <div class="stat-pill">
-          <i class="ti ti-package"></i>
-          <strong id="reqCount">0</strong>&nbsp;tələb
-        </div>
-      </div>
-
-      
-      <div class="user-pill" onclick="switchTab('profile')">
-        <div class="user-avatar" id="topbarAvatar">?</div>
-        <span id="topbarName">İstifadəçi</span>
-        
-        <span class="badge-verify ok" style="margin-left:4px">
-          <i class="ti ti-shield-check" style="font-size:12px"></i>
-        </span>
-      </div>
-
-      
-      <button class="logout-btn" onclick="doLogout()">
-        <i class="ti ti-logout"></i> Çıxış
-      </button>
-
-    </div>
-  </nav>
-
-
-  
-  <div class="main">
-
-    
-    <div class="tabs">
-      <button class="tab active" id="tab-browse" onclick="switchTab('browse')">
-        <i class="ti ti-search"></i> Uçuşlara bax
-      </button>
-      <button class="tab" id="tab-add" onclick="switchTab('add')">
-        <i class="ti ti-plane-departure"></i> Uçuşumu əlavə et
-      </button>
-      <button class="tab" id="tab-send" onclick="switchTab('send')">
-        <i class="ti ti-send"></i> Əşya göndər
-      </button>
-      <button class="tab" id="tab-myRequests" onclick="switchTab('myRequests')">
-        <i class="ti ti-inbox"></i> Tələblərim
-      </button>
-      <button class="tab" id="tab-profile" onclick="switchTab('profile')">
-        <i class="ti ti-user"></i> Profilim
-      </button>
-    </div>
-
-
-   
-    <div class="panel active" id="panel-browse">
-
-      <div class="sec-title">
-        <i class="ti ti-list-search"></i> Aktiv uçuşlar
-      </div>
-
-      
-      <div class="filter-bar">
-        <input class="finput" id="fCity"
-          placeholder="🔍  Şəhər axtar..."
-          oninput="renderFlights()" />
-
-        <select class="finput" id="fType"
-          onchange="renderFlights()" style="max-width:170px">
-          <option value="">Bütün əşyalar</option>
-          <option>Sənəd</option>
-          <option>Geyim</option>
-          <option>Elektronika</option>
-          <option>Ərzaq</option>
-          <option>Dərman</option>
-        </select>
-
-        <select class="finput" id="fSort"
-          onchange="renderFlights()" style="max-width:160px">
-          <option value="date">Tarixə görə</option>
-          <option value="weight">Çəkiyə görə</option>
-          <option value="rating">Reytinqə görə</option>
-        </select>
-      </div>
-
-      
-      <div class="flight-list" id="flightList"></div>
-
-    </div>
-
-
-    
-    <div class="panel" id="panel-add">
-
-      <div class="info-banner">
-        <i class="ti ti-info-circle"></i>
-        <div>
-          Uçuşunuzu əlavə etməklə əşya daşımaq istəyən insanlara kömək
-          edirsiniz. Götürdüyünüz hər şeyin qanuni olduğuna əmin olun.
-        </div>
-      </div>
-
-      <div class="sec-title">
-        <i class="ti ti-plane-departure"></i> Uçuş məlumatlarını daxil et
-      </div>
-
-      <div class="card">
-        <div class="form-grid">
-
-          
-          <div class="fg">
-            <div class="flabel">Haradan</div>
-            <div class="input-icon-wrap">
-              <i class="ti ti-map-pin input-icon"></i>
-              <input class="finput" id="aFrom" placeholder="Bakı" />
-            </div>
-          </div>
-          <div class="fg">
-            <div class="flabel">Hara</div>
-            <div class="input-icon-wrap">
-              <i class="ti ti-map-pin-filled input-icon"></i>
-              <input class="finput" id="aTo" placeholder="İstanbul" />
-            </div>
-          </div>
-
-          
-          <div class="fg">
-            <div class="flabel">Tarix</div>
-            <input class="finput" id="aDate" type="date" />
-          </div>
-          <div class="fg">
-            <div class="flabel">Uçuş saatı</div>
-            <input class="finput" id="aTime" type="time" />
-          </div>
-
-          
-          <div class="fg" style="grid-column:1/-1">
-            <div class="flabel">Bilet / Reys № <span style="color:var(--primary);font-size:11px;text-transform:none;font-weight:400">(daxil edin — məlumatlar avtomatik doldurulacaq)</span></div>
-            <div style="display:flex;gap:8px">
-              <input class="finput" id="aTicket" placeholder="Misal: TK198, FZ329, W65060"
-                style="flex:1" oninput="clearLookupStatus()" />
-              <button class="btn btn-outline" onclick="lookupFlight()" type="button"
-                style="white-space:nowrap;flex-shrink:0">
-                <i class="ti ti-search"></i> Axtar
-              </button>
-            </div>
-            <div id="flightLookupStatus" style="display:none;align-items:center;gap:8px;
-              padding:9px 12px;border-radius:var(--radius-xs);font-size:13px;margin-top:6px"></div>
-          </div>
-          <div class="fg">
-            <div class="flabel">Boş çəki (kq)</div>
-            <input class="finput" id="aWeight" type="number"
-              placeholder="5" min="0.5" max="30" step="0.5" />
-          </div>
-
-          
-          <div class="fg" style="grid-column:1/-1">
-            <div class="flabel">Hansı əşyaları apara bilərsiniz?</div>
-            <div class="check-group" id="typeChecks">
-              <label class="check-item">
-                <input type="checkbox" value="Sənəd" onchange="chk(this)" />
-                <i class="ti ti-file-text"></i> Sənəd
-              </label>
-              <label class="check-item">
-                <input type="checkbox" value="Geyim" onchange="chk(this)" />
-                <i class="ti ti-shirt"></i> Geyim
-              </label>
-              <label class="check-item">
-                <input type="checkbox" value="Elektronika" onchange="chk(this)" />
-                <i class="ti ti-device-laptop"></i> Elektronika
-              </label>
-              <label class="check-item">
-                <input type="checkbox" value="Ərzaq" onchange="chk(this)" />
-                <i class="ti ti-apple"></i> Ərzaq
-              </label>
-              <label class="check-item">
-                <input type="checkbox" value="Dərman" onchange="chk(this)" />
-                <i class="ti ti-pill"></i> Dərman
-              </label>
-              <label class="check-item">
-                <input type="checkbox" value="Digər" onchange="chk(this)" />
-                <i class="ti ti-box"></i> Digər
-              </label>
-            </div>
-          </div>
-
-          
-          <div class="fg" style="grid-column:1/-1">
-            <div class="flabel">Əlavə qeyd (istəyə bağlı)</div>
-            <textarea class="finput" id="aNote" rows="3"
-              placeholder="Məs: kiçik bağlamalar götürə bilərəm, ödəniş tələb etmirəm...">
-            </textarea>
-          </div>
-
-        </div>
-
-        <button class="btn btn-primary btn-full" style="margin-top:4px"
-          onclick="addFlight()">
-          <i class="ti ti-circle-plus"></i> Uçuşu əlavə et
-        </button>
-      </div>
-
-    </div>
-
-
-    
-    <div class="panel" id="panel-send">
-
-      <div class="info-banner">
-        <i class="ti ti-info-circle"></i>
-        <div>
-          Tələbinizi göndərin, uyğun daşıyıcı sizinlə əlaqə saxlayacaq.
-          Qadağan olunmuş əşyaları göndərməyin!
-        </div>
-      </div>
-
-      <div class="sec-title">
-        <i class="ti ti-package"></i> Göndəriş tələbi yarat
-      </div>
-
-      <div class="card">
-        <div class="form-grid">
-
-          
-          <div class="fg">
-            <div class="flabel">Haradan göndərirsiniz</div>
-            <input class="finput" id="rFrom" placeholder="Bakı" />
-          </div>
-          <div class="fg">
-            <div class="flabel">Hara göndərirsiniz</div>
-            <input class="finput" id="rTo" placeholder="İstanbul" />
-          </div>
-
-          
-          <div class="fg">
-            <div class="flabel">Əşyanın növü</div>
-            <select class="finput" id="rType">
-              <option value="">Seçin...</option>
-              <option>Sənəd</option>
-              <option>Geyim</option>
-              <option>Elektronika</option>
-              <option>Ərzaq</option>
-              <option>Dərman</option>
-              <option>Digər</option>
-            </select>
-          </div>
-          <div class="fg">
-            <div class="flabel">Təxmini çəki (kq)</div>
-            <input class="finput" id="rWeight" type="number"
-              placeholder="2" min="0.1" step="0.1" />
-          </div>
-
-          
-          <div class="fg" style="grid-column:1/-1">
-            <div class="flabel">Əşyanın təsviri</div>
-            <textarea class="finput" id="rDesc" rows="3"
-              placeholder="Nə göndərmək istədiyinizi ətraflı yazın...">
-            </textarea>
-          </div>
-
-          
-          <div class="fg" style="grid-column:1/-1">
-            <div class="flabel">Əşyanın şəkli (istəyə bağlı)</div>
-            <div class="upload-area" id="ua3"
-              ondragover="dragOver(event,'ua3')"
-              ondragleave="dragLeave('ua3')"
-              ondrop="dropFile(event,'itemImg','ua3','prev3')">
-              <input type="file" accept="image/*"
-                onchange="fileChosen(this,'itemImg','ua3','prev3')" />
-              <div class="upload-icon"><i class="ti ti-photo"></i></div>
-              <div class="upload-text">Əşyanın şəklini əlavə edin</div>
-              <div class="upload-hint">JPG, PNG — maks. 5 MB</div>
-            </div>
-            <div class="upload-preview" id="prev3">
-              <i class="ti ti-circle-check" style="font-size:16px"></i>
-              <span id="prev3name"></span>
-              <span onclick="clearFile('itemImg','ua3','prev3')"
-                style="cursor:pointer; margin-left:auto; opacity:.7">✕</span>
-            </div>
-          </div>
-
-        </div>
-
-        <button class="btn btn-success btn-full" style="margin-top:4px"
-          onclick="sendRequest()">
-          <i class="ti ti-send"></i> Tələbi göndər
-        </button>
-      </div>
-
-    </div>
-
-
-    
-    <div class="panel" id="panel-myRequests">
-      <div class="sec-title">
-        <i class="ti ti-inbox"></i> Göndərdiyim tələblər
-      </div>
-      <div id="requestList">
-        <div class="empty">
-          <i class="ti ti-inbox"></i>
-          <p>Hələ heç bir tələb göndərməmisiniz.</p>
-        </div>
-      </div>
-    </div>
-
-    
-    <div class="panel" id="panel-profile">
-      <div class="card" style="padding:0; overflow:hidden">
-
-        
-        <div class="profile-header">
-          <div class="profile-avatar" id="profAvatar">?</div>
-          <div class="profile-info">
-            <h2 id="profName">—</h2>
-            <p id="profEmail">—</p>
-            <p id="profPhone" style="margin-top:2px"></p>
-          </div>
-        </div>
-
-        <div style="padding:0 1.25rem 1.25rem">
-
-          
-          <div style="display:flex; gap:1rem; margin-bottom:1rem">
-            <div class="card" style="flex:1; text-align:center; margin:0; padding:.8rem">
-              <div style="font-size:22px; font-weight:600; color:var(--primary)"
-                id="myFlightCount">0</div>
-              <div style="font-size:12px; color:var(--text2)">Uçuşum</div>
-            </div>
-            <div class="card" style="flex:1; text-align:center; margin:0; padding:.8rem">
-              <div style="font-size:22px; font-weight:600; color:var(--success)"
-                id="myReqCount">0</div>
-              <div style="font-size:12px; color:var(--text2)">Tələbim</div>
-            </div>
-            <div class="card" style="flex:1; text-align:center; margin:0; padding:.8rem">
-              <div style="font-size:22px; font-weight:600; color:#f59e0b"
-                id="myRating">—</div>
-              <div style="font-size:12px; color:var(--text2)">Reytinq</div>
-            </div>
-          </div>
-
-          
-          <div class="sec-title" style="margin-bottom:.6rem">
-            <i class="ti ti-id"></i> Şəxsiyyət vəsiqəsi
-          </div>
-          <div class="id-preview">
-            <div class="id-left">
-              <i class="ti ti-shield-check" style="color:var(--success); font-size:18px"></i>
-              <span>Sənədiniz yüklənib</span>
-            </div>
-            <span class="badge-verify ok">
-              <i class="ti ti-check"></i> Təsdiqləndi
-            </span>
-          </div>
-
-       
-
-         
-          <button class="btn btn-outline btn-full" style="margin-top:1rem"
-            onclick="doLogout()">
-            <i class="ti ti-logout"></i> Hesabdan çıx
-          </button>
-
-        </div>
-      </div>
-    </div>
-
-
-  </div>
 </div>
 
 
-
-<div class="overlay" id="contactModal">
-  <div class="modal">
-    <div class="modal-head">
-      <h3 id="modTitle">Daşıyıcı ilə əlaqə</h3>
-      <button class="modal-close" onclick="closeModal()">
-        <i class="ti ti-x"></i>
-      </button>
+<div class="modal-overlay" id="contactModal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3 id="modTitle">Əlaqə</h3>
+            <button onclick="closeModal()"><i class="ti ti-x"></i></button>
+        </div>
+        <div class="modal-body" id="modBody"></div>
     </div>
-    
-    <div class="modal-body" id="modBody"></div>
-  </div>
 </div>
-
-
 
 <div class="toast" id="toast"></div>
 
-
-
 <script src="script.js"></script>
-
 </body>
 </html>
