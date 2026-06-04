@@ -72,7 +72,10 @@ let flights = [
   { id:1, uid:"demo", name:"Kamran Nəsirov", initials:"KN", phone:"+994 50 211 45 67", from:"Bakı", to:"İstanbul", date:"2025-06-04", time:"19:00", ticket:"TK 198", weight:7, types:["Geyim","Sənəd","Dərman"], note:"Kiçik bağlamalar götürə bilərəm.", rating:4.7, ratingCount:12 },
   { id:2, uid:"u2", name:"Leyla Məmmədova", initials:"LM", phone:"+994 55 334 89 01", from:"Bakı", to:"Moskva", date:"2025-06-05", time:"14:30", ticket:"S7 742", weight:5, types:["Sənəd","Elektronika"], note:"Kövrək əşyaları götürə bilərəm.", rating:4.2, ratingCount:8 },
   { id:3, uid:"u3", name:"Rauf Quliyev", initials:"RQ", phone:"+994 70 456 12 34", from:"Bakı", to:"Dubay", date:"2025-06-07", time:"22:15", ticket:"FZ 329", weight:10, types:["Geyim","Ərzaq","Digər"], note:"5 kq-ya qədər götürə bilərəm.", rating:5.0, ratingCount:3 },
-  { id:4, uid:"u4", name:"Nərmin Hüseynova", initials:"NH", phone:"+994 51 789 01 23", from:"Bakı", to:"London", date:"2025-06-10", time:"07:45", ticket:"BA 722", weight:8, types:["Sənəd","Geyim"], note:"", rating:0, ratingCount:0 }
+  { id:4, uid:"u4", name:"Nərmin Hüseynova", initials:"NH", phone:"+994 51 789 01 23", from:"Bakı", to:"London", date:"2025-06-10", time:"07:45", ticket:"BA 722", weight:8, types:["Sənəd","Geyim"], note:"", rating:0, ratingCount:0 },
+  { id:5, uid:"u5", name:"Tural Babayev", initials:"TB", phone:"+994 55 612 33 21", from:"Bakı", to:"Berlin", date:"2025-06-11", time:"10:20", ticket:"LH 693", weight:6, types:["Elektronika","Geyim"], note:"Yalnız kiçik qutu və ya zərf götürə bilərəm.", rating:4.5, ratingCount:6 },
+  { id:6, uid:"u6", name:"Aytən Rzayeva", initials:"AR", phone:"+994 70 881 44 56", from:"Bakı", to:"Paris", date:"2025-06-12", time:"08:55", ticket:"AF 875", weight:4, types:["Sənəd","Dərman"], note:"Dərman və sənəd göndərənlərə üstünlük verirəm.", rating:4.8, ratingCount:15 },
+  { id:7, uid:"u7", name:"Elvin Həsənov", initials:"EH", phone:"+994 51 320 77 90", from:"Bakı", to:"Amsterdam", date:"2025-06-13", time:"16:40", ticket:"KL 456", weight:9, types:["Geyim","Ərzaq","Digər"], note:"Hər növ əşya götürə bilərəm, çox ağır olmasın.", rating:3.9, ratingCount:4 }
 ];
 let requests = [];
 let uploadedFiles = { idFront:null, idBack:null, itemImg:null };
