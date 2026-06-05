@@ -39,11 +39,6 @@ body {
     color: #ffffff;
 }
 
-.logo-box {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-}
 
 .auth-header h1 {
     font-size: 24px;
@@ -373,15 +368,7 @@ body {
     color: #111827;
 }
 
-.nav-icon {
-    width: 34px;
-    height: 34px;
-    background-color: #2563eb;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 .nav-right {
     display: flex;
