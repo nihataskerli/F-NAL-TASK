@@ -560,7 +560,7 @@ function addFlight() {
     var to     = document.getElementById("aTo").value.trim();
     var date   = document.getElementById("aDate").value;
     var time   = document.getElementById("aTime").value;
-    // HTML-də ayrıca bilet nömrəsi inputu yoxdur, ona görə avtomatik kod yaradırıq
+    
     var ticket = "BF-" + Date.now();
     var weight = parseFloat(document.getElementById("aWeight").value);
     var note   = document.getElementById("aNote").value.trim();
@@ -1236,8 +1236,7 @@ function formatDate(str) {
 
 
 
-// Şəhər axtarışı üçün API funksiyası
-// İstifadəçi inputa ən az 2 hərf yazanda OpenStreetMap Nominatim API-dən şəhərlər gəlir
+
 function setupCitySearch(inputId) {
     var input = document.getElementById(inputId);
 
