@@ -21,7 +21,7 @@ var flights = [
         time: "19:00",
         ticket: "TK 198",
         weight: 7,
-        types: ["Geyim", "Senad", "Derman"],
+        types: ["Geyim", "Sənəd", "Dərman"],
         note: "Kiçik bağlamalar götürə bilərəm.",
         rating: 4.7,
         ratingCount: 12
@@ -38,8 +38,8 @@ var flights = [
         time: "14:30",
         ticket: "S7 742",
         weight: 5,
-        types: ["Senad", "Elektronika"],
-        note: "Kövrək əşyaları götürə bilərəm.",
+        types: ["Sənəd", "Elektronika"],
+        note: "Qırılmayan əşyaları götürə bilərəm.",
         rating: 4.2,
         ratingCount: 8
     },
@@ -55,7 +55,7 @@ var flights = [
         time: "22:15",
         ticket: "FZ 329",
         weight: 10,
-        types: ["Geyim", "Erzaq", "Diger"],
+        types: ["Geyim", "Ərzaq", "Digər"],
         note: "5 kq-a qədər götürə bilərəm.",
         rating: 5.0,
         ratingCount: 3
@@ -72,7 +72,7 @@ var flights = [
         time: "07:45",
         ticket: "BA 722",
         weight: 8,
-        types: ["Senad", "Geyim"],
+        types: ["Sənəd", "Geyim"],
         note: "",
         rating: 0,
         ratingCount: 0
@@ -106,7 +106,7 @@ var flights = [
         time: "08:55",
         ticket: "AF 875",
         weight: 4,
-        types: ["Senad", "Derman"],
+        types: ["Sənəd", "Dərman"],
         note: "Dərman və sənəd göndərənlərə üstünlük verirəm.",
         rating: 4.8,
         ratingCount: 15
@@ -123,7 +123,7 @@ var flights = [
         time: "16:40",
         ticket: "KL 456",
         weight: 9,
-        types: ["Geyim", "Erzaq", "Diger"],
+        types: ["Geyim", "Ərzaq", "Digər"],
         note: "Hər növ əşya götürə bilərəm.",
         rating: 3.9,
         ratingCount: 4
