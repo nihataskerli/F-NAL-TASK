@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
+    
 </head>
 
 <body>
@@ -218,11 +219,11 @@
                     <select id="fType" onchange="renderFlights()">
                         <option value="">Bütün əşyalar</option>
                         <option value="Geyim">Geyim</option>
-                        <option value="Senad">Sənəd</option>
+                        <option value="Sənəd">Sənəd</option>
                         <option value="Elektronika">Elektronika</option>
-                        <option value="Erzaq">Ərzaq</option>
-                        <option value="Derman">Dərman</option>
-                        <option value="Diger">Digər</option>
+                        <option value="Ərzaq">Ərzaq</option>
+                        <option value="Dərman">Dərman</option>
+                        <option value="Digər">Digər</option>
                     </select>
                     <select id="fSort" onchange="renderFlights()">
                         <option value="date">Tarixə görə</option>
@@ -285,7 +286,7 @@
                         <label>Hansı əşyaları apara bilərsiniz?</label>
                         <div class="check-list" id="typeChecks">
                             <label class="check-item">
-                                <input type="checkbox" value="Senad" onchange="chk(this)">
+                                <input type="checkbox" value="Sənəd" onchange="chk(this)">
                                 <i class="ti ti-file-text"></i> Sənəd
                             </label>
                             <label class="check-item">
@@ -297,15 +298,15 @@
                                 <i class="ti ti-device-laptop"></i> Elektronika
                             </label>
                             <label class="check-item">
-                                <input type="checkbox" value="Erzaq" onchange="chk(this)">
+                                <input type="checkbox" value="Ərzaq" onchange="chk(this)">
                                 <i class="ti ti-apple"></i> Ərzaq
                             </label>
                             <label class="check-item">
-                                <input type="checkbox" value="Derman" onchange="chk(this)">
+                                <input type="checkbox" value="Dərman" onchange="chk(this)">
                                 <i class="ti ti-pill"></i> Dərman
                             </label>
                             <label class="check-item">
-                                <input type="checkbox" value="Diger" onchange="chk(this)">
+                                <input type="checkbox" value="Digər" onchange="chk(this)">
                                 <i class="ti ti-box"></i> Digər
                             </label>
                         </div>
@@ -352,12 +353,12 @@
                             <label for="rType">Əşyanın növü</label>
                             <select id="rType">
                                 <option value="">Seçin...</option>
-                                <option value="Senad">Sənəd</option>
+                                <option value="Sənəd">Sənəd</option>
                                 <option value="Geyim">Geyim</option>
                                 <option value="Elektronika">Elektronika</option>
-                                <option value="Erzaq">Ərzaq</option>
-                                <option value="Derman">Dərman</option>
-                                <option value="Diger">Digər</option>
+                                <option value="Ərzaq">Ərzaq</option>
+                                <option value="Dərman">Dərman</option>
+                                <option value="Digər">Digər</option>
                             </select>
                         </div>
                         <div class="form-group">
