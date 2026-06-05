@@ -332,13 +332,11 @@ function doSignup() {
         return;
     }
 
-    var isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  if (isValidEmail === false) {
-    showToast("Düzgün e-poçt daxil edin", "warn");
-    return;
-   }
-    
+    var isGmail = /^[a-zA-Z0-9._%+-]+@gmail.com$/.test(email);
+    if (isGmail === false) {
+        showToast("Düzgün mail yazmağınız xahiş olunur", "warn");
+        return;
+    }
 
     if (pass !== pass2) {
         showToast("Şifrələr uyğun gəlmir", "danger");
@@ -414,6 +412,7 @@ function doSignup() {
 
 function enterApp() {
     localStorage.setItem("bf_current_user", JSON.stringify(currentUser));
+    loadData();
     document.getElementById("authScreen").style.display = "none";
     document.getElementById("appScreen").classList.add("visible");
 
@@ -602,6 +601,7 @@ function addFlight() {
     };
 
     flights.unshift(newFlight);
+    saveData();
 
     document.getElementById("aFrom").value   = "";
     document.getElementById("aTo").value     = "";
@@ -652,6 +652,7 @@ function sendRequest() {
     };
 
     requests.push(newRequest);
+    saveData();
 
     document.getElementById("rFrom").value   = "";
     document.getElementById("rTo").value     = "";
@@ -838,6 +839,7 @@ function deleteFlight(id) {
     }
 
     flights = newList;
+    saveData();
     updateCounters();
     renderFlights();
     showToast("Ucus silindi");
@@ -917,6 +919,7 @@ function deleteRequest(id) {
     }
 
     requests = newList;
+    saveData();
     updateCounters();
     renderRequests();
     showToast("Teleb silindi");
@@ -1242,9 +1245,8 @@ function formatDate(str) {
 }
 
 
-
-// Şəhər axtarışı üçün custom autocomplete
-// 2 hərf yazandan sonra inputun altında şəhər siyahısı çıxır
+// Şəhər axtarışı üçün autocomplete funksiyası
+// Bu hissə yalnız API ilə işləyir
 function setupCitySearch(inputId) {
     var input = document.getElementById(inputId);
 
@@ -1254,12 +1256,13 @@ function setupCitySearch(inputId) {
 
     input.setAttribute("autocomplete", "off");
 
-    var box = document.createElement("div");
-    box.className = "city-suggestions";
-    box.style.display = "none";
+    var parent = input.parentElement;
+    parent.style.position = "relative";
 
-    input.parentNode.style.position = "relative";
-    input.parentNode.appendChild(box);
+    var box = document.createElement("div");
+    box.className = "city-suggest-box";
+    box.style.display = "none";
+    parent.appendChild(box);
 
     var timer = null;
 
@@ -1276,11 +1279,11 @@ function setupCitySearch(inputId) {
             return;
         }
 
-        box.innerHTML = '<div class="city-loading">Axtarılır...</div>';
+        box.innerHTML = '<div class="city-suggest-empty">Axtarılır...</div>';
         box.style.display = "block";
 
         timer = setTimeout(function() {
-           var url = "https://nominatim.openstreetmap.org/search?format=json&limit=8&addressdetails=1&accept-language=az&q=" + encodeURIComponent(searchText);
+            var url = "https://nominatim.openstreetmap.org/search?format=json&limit=8&addressdetails=1&accept-language=az&q=" + encodeURIComponent(searchText);
 
             fetch(url)
                 .then(function(response) {
@@ -1289,10 +1292,17 @@ function setupCitySearch(inputId) {
                 .then(function(data) {
                     box.innerHTML = "";
 
+                    if (!data || data.length === 0) {
+                        box.innerHTML = '<div class="city-suggest-empty">Şəhər tapılmadı</div>';
+                        box.style.display = "block";
+                        return;
+                    }
+
                     var addedCities = [];
+                    var count = 0;
                     var i = 0;
 
-                    while (i < data.length) {
+                    while (i < data.length && count < 6) {
                         var address = data[i].address || {};
                         var city = "";
                         var country = "";
@@ -1305,59 +1315,84 @@ function setupCitySearch(inputId) {
                             city = address.village;
                         } else if (address.municipality) {
                             city = address.municipality;
-                        } else if (address.state) {
-                            city = address.state;
+                        } else if (address.county) {
+                            city = address.county;
                         }
 
                         if (address.country) {
                             country = address.country;
                         }
 
-                        if (city !== "" && addedCities.indexOf(city + country) === -1) {
+                        if (city !== "" && addedCities.indexOf(city) === -1) {
+                            addedCities.push(city);
+                            count++;
+
                             var item = document.createElement("div");
-                            item.className = "city-item";
+                            item.className = "city-suggest-item";
 
                             if (country !== "") {
-                                item.innerHTML = '<strong>' + city + '</strong><span>' + country + '</span>';
+                                item.innerHTML = "<strong>" + city + "</strong><span>" + country + "</span>";
                             } else {
-                                item.innerHTML = '<strong>' + city + '</strong>';
+                                item.innerHTML = "<strong>" + city + "</strong><span></span>";
                             }
 
                             item.onclick = function() {
-                                var selectedCity = this.querySelector("strong").textContent;
-                                input.value = selectedCity;
+                                input.value = this.querySelector("strong").textContent;
                                 box.innerHTML = "";
                                 box.style.display = "none";
                             };
 
                             box.appendChild(item);
-                            addedCities.push(city + country);
                         }
 
                         i++;
                     }
 
-                    if (box.innerHTML === "") {
-                        box.innerHTML = '<div class="city-loading">Şəhər tapılmadı</div>';
+                    if (count === 0) {
+                        box.innerHTML = '<div class="city-suggest-empty">Şəhər tapılmadı</div>';
                     }
+
+                    box.style.display = "block";
                 })
                 .catch(function() {
-                    box.innerHTML = '<div class="city-loading">Axtarış alınmadı</div>';
+                    box.innerHTML = '<div class="city-suggest-empty">API xətası baş verdi</div>';
+                    box.style.display = "block";
                 });
-        }, 350);
+        }, 500);
     });
 
-    document.addEventListener("click", function(event) {
-        if (input.parentNode.contains(event.target) === false) {
+    document.addEventListener("click", function(e) {
+        if (parent.contains(e.target) === false) {
             box.style.display = "none";
         }
     });
+}
 
-    input.addEventListener("focus", function() {
-        if (box.innerHTML !== "" && input.value.trim().length >= 2) {
-            box.style.display = "block";
+function saveData() {
+    localStorage.setItem("bf_flights", JSON.stringify(flights));
+    localStorage.setItem("bf_requests", JSON.stringify(requests));
+}
+
+
+function loadData() {
+    var savedFlights = localStorage.getItem("bf_flights");
+    var savedRequests = localStorage.getItem("bf_requests");
+
+    if (savedFlights !== null) {
+        try {
+            flights = JSON.parse(savedFlights);
+        } catch (e) {
+            localStorage.removeItem("bf_flights");
         }
-    });
+    }
+
+    if (savedRequests !== null) {
+        try {
+            requests = JSON.parse(savedRequests);
+        } catch (e) {
+            localStorage.removeItem("bf_requests");
+        }
+    }
 }
 
 
