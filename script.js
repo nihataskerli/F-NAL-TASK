@@ -332,11 +332,13 @@ function doSignup() {
         return;
     }
 
-    var isGmail = /^[a-zA-Z0-9._%+-]+@gmail.com$/.test(email);
-    if (isGmail === false) {
-        showToast("Düzgün mail yazmağınız xahiş olunur", "warn");
-        return;
-    }
+    var isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  if (isValidEmail === false) {
+    showToast("Düzgün e-poçt daxil edin", "warn");
+    return;
+   }
+    
 
     if (pass !== pass2) {
         showToast("Şifrələr uyğun gəlmir", "danger");
@@ -1278,7 +1280,7 @@ function setupCitySearch(inputId) {
         box.style.display = "block";
 
         timer = setTimeout(function() {
-            var url = "https://nominatim.openstreetmap.org/search?format=json&limit=8&addressdetails=1&q=" + encodeURIComponent(searchText);
+           var url = "https://nominatim.openstreetmap.org/search?format=json&limit=8&addressdetails=1&accept-language=az&q=" + encodeURIComponent(searchText);
 
             fetch(url)
                 .then(function(response) {
