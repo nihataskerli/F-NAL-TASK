@@ -1384,6 +1384,52 @@ body {
 }
 
 
+/* ===== ŞƏHƏR API DROPDOWN ===== */
+.city-suggestions {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #dbeafe;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    z-index: 9999;
+    overflow: hidden;
+    display: none;
+}
+
+.city-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.city-item:hover {
+    background: #eff6ff;
+}
+
+.city-item strong {
+    display: block;
+    font-size: 14px;
+    color: #111827;
+}
+
+.city-item span {
+    display: block;
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+.city-loading,
+.city-empty {
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+
 
 /* ===== REYTİNQ ULDUZLARI ===== */
 .rating-box {
@@ -1408,15 +1454,172 @@ body {
 
 .rating-star {
     border: none;
-    background: transparent;
-    font-size: 26px;
+    background: transparent !important;
+    font-size: 32px;
     color: #d1d5db;
     cursor: pointer;
-    padding: 0 2px;
+    padding: 0 4px;
     line-height: 1;
+    display: inline-block;
 }
 
 .rating-star:hover,
 .rating-star.active {
     color: #f59e0b;
+}
+
+
+/* ===== REYTİNQ ULDUZLARI SON DÜZƏLİŞ ===== */
+.rating-box {
+    margin: 14px 0;
+    padding: 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.rating-box span {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.rating-stars {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+}
+
+.rating-star {
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 34px !important;
+    color: #d1d5db !important;
+    cursor: pointer;
+    padding: 0 2px !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+}
+
+.rating-star:hover,
+.rating-star.active {
+    color: #f59e0b !important;
+}
+
+
+/* ===== MODAL REYTİNQ ULDUZ DÜZƏLİŞİ ===== */
+#ratingStars .rating-box {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+}
+
+#ratingStars .rating-box span {
+    display: none;
+}
+
+#ratingStars .rating-stars {
+    display: flex !important;
+    gap: 8px;
+    margin: 8px 0 14px;
+}
+
+#ratingStars .rating-star {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    width: auto !important;
+    min-width: auto !important;
+    padding: 0 3px !important;
+    font-size: 34px !important;
+    line-height: 1 !important;
+    color: #d1d5db !important;
+    cursor: pointer;
+}
+
+#ratingStars .rating-star:hover,
+#ratingStars .rating-star.active {
+    color: #f59e0b !important;
+}
+
+
+
+/* ===== ULDUZ KLIK DÜZƏLİŞİ ===== */
+.rating-stars,
+#ratingStars {
+    pointer-events: auto !important;
+}
+
+.rating-star {
+    pointer-events: auto !important;
+    user-select: none;
+    position: relative;
+    z-index: 5;
+}
+
+.rating-star:focus {
+    outline: none;
+}
+
+
+/* ===== REYTİNQ KLIK SON FIX ===== */
+#ratingStars {
+    display: flex !important;
+    gap: 10px !important;
+    align-items: center;
+    margin: 8px 0 14px !important;
+}
+
+#ratingStars .rating-star {
+    display: inline-block !important;
+    font-size: 36px !important;
+    line-height: 1 !important;
+    color: #d1d5db !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    padding: 0 2px !important;
+    background: transparent !important;
+    border: none !important;
+    pointer-events: auto !important;
+}
+
+#ratingStars .rating-star:hover,
+#ratingStars .rating-star.active {
+    color: #f59e0b !important;
+}
+
+
+/* ===== REYTİNQ SON STABIL FIX ===== */
+#ratingStars {
+    display: flex !important;
+    align-items: center;
+    gap: 10px !important;
+    margin: 8px 0 14px !important;
+}
+
+#ratingStars .rating-star {
+    display: inline-block !important;
+    font-size: 38px !important;
+    line-height: 1 !important;
+    color: #d1d5db !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    padding: 2px 4px !important;
+    background: transparent !important;
+    border: 0 !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 99999 !important;
+}
+
+#ratingStars .rating-star:hover,
+#ratingStars .rating-star.active {
+    color: #f59e0b !important;
 }

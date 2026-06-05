@@ -412,6 +412,8 @@ function doSignup() {
 
 
 function enterApp() {
+    loadData();
+    applySavedRatingsToFlights();
     localStorage.setItem("bf_current_user", JSON.stringify(currentUser));
     document.getElementById("authScreen").style.display = "none";
     document.getElementById("appScreen").classList.add("visible");
@@ -601,6 +603,7 @@ function addFlight() {
     };
 
     flights.unshift(newFlight);
+    saveData();
 
     document.getElementById("aFrom").value   = "";
     document.getElementById("aTo").value     = "";
@@ -651,6 +654,7 @@ function sendRequest() {
     };
 
     requests.push(newRequest);
+    saveData();
 
     document.getElementById("rFrom").value   = "";
     document.getElementById("rTo").value     = "";
@@ -837,6 +841,7 @@ function deleteFlight(id) {
     }
 
     flights = newList;
+    saveData();
     updateCounters();
     renderFlights();
     showToast("Uçuş silindi");
@@ -916,6 +921,7 @@ function deleteRequest(id) {
     }
 
     requests = newList;
+    saveData();
     updateCounters();
     renderRequests();
     showToast("Tələb silindi");
@@ -964,27 +970,27 @@ function openContact(id) {
 
     bodyHTML = bodyHTML + '<div id="contactActions" style="display:flex;gap:8px;margin-top:16px">';
     bodyHTML = bodyHTML +     '<button class="btn btn-primary" style="flex:1" onclick="startChat(' + flight.id + ')"><i class="ti ti-message"></i> Əlaqə saxla</button>';
-    bodyHTML = bodyHTML +     '<button class="btn btn-outline" style="flex:1" onclick="closeModal()"><i class="ti ti-x"></i> Baghla</button>';
+    bodyHTML = bodyHTML +     '<button class="btn btn-outline" style="flex:1" onclick="closeModal()"><i class="ti ti-x"></i> Bağla</button>';
     bodyHTML = bodyHTML + '</div>';
 
     bodyHTML = bodyHTML + '<div id="chatSection" style="display:none;margin-top:14px">';
     bodyHTML = bodyHTML +     '<div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px">';
     bodyHTML = bodyHTML +         '<div id="chatMessages" style="padding:12px;max-height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:var(--bg-gray);min-height:80px"></div>';
     bodyHTML = bodyHTML +         '<div style="display:flex;gap:8px;padding:8px;border-top:1px solid var(--border);background:white">';
-    bodyHTML = bodyHTML +             '<input type="text" id="chatInput" placeholder="Mesajinizi yazin..." style="flex:1;border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:13px;font-family:inherit" onkeydown="if(event.key===\'Enter\')sendChatMsg(' + flight.id + ')">';
+    bodyHTML = bodyHTML +             '<input type="text" id="chatInput" placeholder="Mesajınızı yazın..." style="flex:1;border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:13px;font-family:inherit" onkeydown="if(event.key===\'Enter\')sendChatMsg(' + flight.id + ')">';
     bodyHTML = bodyHTML +             '<button onclick="sendChatMsg(' + flight.id + ')" style="background:var(--blue);color:white;border:none;border-radius:6px;padding:8px 14px;cursor:pointer;font-size:16px"><i class="ti ti-send"></i></button>';
     bodyHTML = bodyHTML +         '</div>';
     bodyHTML = bodyHTML +     '</div>';
     bodyHTML = bodyHTML +     '<div style="display:flex;gap:8px">';
-    bodyHTML = bodyHTML +         '<button class="btn btn-outline" style="flex:1" onclick="endChatAndRate(' + flight.id + ')"><i class="ti ti-star"></i> Bitir ve qiymetlendir</button>';
-    bodyHTML = bodyHTML +         '<button class="btn btn-outline" style="flex:1" onclick="closeModal()"><i class="ti ti-x"></i> Baghla</button>';
+    bodyHTML = bodyHTML +         '<button class="btn btn-outline" style="flex:1" onclick="endChatAndRate(' + flight.id + ')"><i class="ti ti-star"></i> Bitir və qiymətləndir</button>';
+    bodyHTML = bodyHTML +         '<button class="btn btn-outline" style="flex:1" onclick="closeModal()"><i class="ti ti-x"></i> Bağla</button>';
     bodyHTML = bodyHTML +     '</div>';
     bodyHTML = bodyHTML + '</div>';
 
     bodyHTML = bodyHTML + '<div id="ratingSection" style="display:none;margin-top:14px">';
-    bodyHTML = bodyHTML +     '<p style="font-size:14px;font-weight:600;margin-bottom:8px">Dasiyicini qiymetlendir:</p>';
+    bodyHTML = bodyHTML +     '<p style="font-size:14px;font-weight:600;margin-bottom:8px">Daşıyıcını qiymətləndir:</p>';
     bodyHTML = bodyHTML +     '<div id="ratingStars" style="display:flex;gap:6px;margin-bottom:14px"></div>';
-    bodyHTML = bodyHTML +     '<button class="btn btn-primary" onclick="closeModal()"><i class="ti ti-check"></i> Baghla</button>';
+    bodyHTML = bodyHTML +     '<button class="btn btn-primary" onclick="closeModal()"><i class="ti ti-check"></i> Bağla</button>';
     bodyHTML = bodyHTML + '</div>';
 
     document.getElementById("modBody").innerHTML = bodyHTML;
@@ -1094,61 +1100,49 @@ function renderChatMessages(flightId) {
 }
 
 
+
 function endChatAndRate(flightId) {
-    document.getElementById("chatSection").style.display   = "none";
+    document.getElementById("chatSection").style.display = "none";
     document.getElementById("ratingSection").style.display = "block";
-    buildRatingStars(flightId, 0);
+    showRatingStars(flightId);
 }
 
 
-function buildRatingStars(flightId, hover) {
+function showRatingStars(flightId) {
     var container = document.getElementById("ratingStars");
-    if (container === null) return;
 
+    if (container === null) {
+        return;
+    }
+
+    container.innerHTML = buildRatingStars(flightId);
+}
+
+
+function buildRatingStars(flightId) {
+    var savedRating = getSavedRating(flightId);
     var html = "";
-    var i    = 1;
+    var i = 1;
 
     while (i <= 5) {
-        var color = "";
+        var activeClass = "";
 
-        if (i <= hover) {
-            color = "#f59e0b";
-        } else {
-            color = "var(--border)";
+        if (savedRating !== null && i <= savedRating) {
+            activeClass = " active";
         }
 
-        html = html + '<span style="font-size:32px;cursor:pointer;color:' + color + ';transition:color .1s" ';
-        html = html + 'onmouseover="buildRatingStars(' + flightId + ',' + i + ')" ';
-        html = html + 'onmouseout="buildRatingStars(' + flightId + ',0)" ';
-        html = html + 'onclick="submitRating(' + flightId + ',' + i + ')">★</span>';
-
+        html = html + '<span class="rating-star' + activeClass + '" data-flight="' + flightId + '" data-value="' + i + '">★</span>';
         i++;
     }
 
-    container.innerHTML = html;
+    return html;
 }
 
 
 function submitRating(flightId, value) {
-    var flight = null;
-    var i      = 0;
-
-    while (i < flights.length) {
-        if (flights[i].id === flightId) {
-            flight = flights[i];
-        }
-        i++;
-    }
-
-    if (flight === null) return;
-
-    var newTotal       = flight.rating * flight.ratingCount + value;
-    flight.ratingCount = flight.ratingCount + 1;
-    flight.rating      = parseFloat((newTotal / flight.ratingCount).toFixed(1));
-
-    showToast("Reytinqiniz üçün təşəkkür! ", "success");
-    closeModal();
-    renderFlights();
+    saveRating(flightId, value);
+    showRatingStars(flightId);
+    showToast("Reytinqiniz üçün təşəkkür!", "success");
 }
 
 
@@ -1241,8 +1235,9 @@ function formatDate(str) {
 }
 
 
-// Şəhər axtarışı üçün sadə API funksiyası
-// İstifadəçi 2 hərf yazandan sonra uyğun şəhərlər datalist kimi çıxır
+
+// Şəhər axtarışı üçün API funksiyası
+// İstifadəçi inputa ən az 2 hərf yazanda OpenStreetMap Nominatim API-dən şəhərlər gəlir
 function setupCitySearch(inputId) {
     var input = document.getElementById(inputId);
 
@@ -1250,18 +1245,17 @@ function setupCitySearch(inputId) {
         return;
     }
 
-    var listId = inputId + "List";
-    input.setAttribute("list", listId);
     input.setAttribute("autocomplete", "off");
 
-    var oldList = document.getElementById(listId);
-    if (oldList !== null) {
-        oldList.remove();
+    var oldBox = input.parentElement.querySelector(".city-suggestions");
+    if (oldBox !== null) {
+        oldBox.remove();
     }
 
-    var dataList = document.createElement("datalist");
-    dataList.id = listId;
-    document.body.appendChild(dataList);
+    var box = document.createElement("div");
+    box.className = "city-suggestions";
+    input.parentElement.style.position = "relative";
+    input.parentElement.appendChild(box);
 
     var timer = null;
 
@@ -1273,19 +1267,32 @@ function setupCitySearch(inputId) {
         }
 
         if (searchText.length < 2) {
-            dataList.innerHTML = "";
+            box.innerHTML = "";
+            box.style.display = "none";
             return;
         }
 
+        box.innerHTML = '<div class="city-loading">Axtarılır...</div>';
+        box.style.display = "block";
+
         timer = setTimeout(function() {
-            var url = "https://nominatim.openstreetmap.org/search?format=json&limit=6&addressdetails=1&featuretype=city&q=" + encodeURIComponent(searchText);
+            var url = "https://nominatim.openstreetmap.org/search?format=json&limit=8&addressdetails=1&accept-language=az&q=" + encodeURIComponent(searchText);
 
             fetch(url)
                 .then(function(response) {
+                    if (response.ok === false) {
+                        throw new Error("API cavab vermədi");
+                    }
+
                     return response.json();
                 })
                 .then(function(data) {
-                    dataList.innerHTML = "";
+                    box.innerHTML = "";
+
+                    if (!data || data.length === 0) {
+                        box.innerHTML = '<div class="city-empty">Şəhər tapılmadı</div>';
+                        return;
+                    }
 
                     var addedCities = [];
                     var i = 0;
@@ -1293,6 +1300,7 @@ function setupCitySearch(inputId) {
                     while (i < data.length) {
                         var address = data[i].address || {};
                         var city = "";
+                        var country = "";
 
                         if (address.city) {
                             city = address.city;
@@ -1300,24 +1308,52 @@ function setupCitySearch(inputId) {
                             city = address.town;
                         } else if (address.village) {
                             city = address.village;
-                        } else if (address.state) {
-                            city = address.state;
+                        } else if (address.municipality) {
+                            city = address.municipality;
+                        } else if (address.county) {
+                            city = address.county;
+                        }
+
+                        if (address.country) {
+                            country = address.country;
                         }
 
                         if (city !== "" && addedCities.indexOf(city) === -1) {
-                            var option = document.createElement("option");
-                            option.value = city;
-                            dataList.appendChild(option);
                             addedCities.push(city);
+
+                            var item = document.createElement("div");
+                            item.className = "city-item";
+
+                            item.innerHTML =
+                                '<strong>' + city + '</strong>' +
+                                '<span>' + country + '</span>';
+
+                            item.onclick = function() {
+                                input.value = this.querySelector("strong").textContent;
+                                box.innerHTML = "";
+                                box.style.display = "none";
+                            };
+
+                            box.appendChild(item);
                         }
 
                         i++;
                     }
+
+                    if (addedCities.length === 0) {
+                        box.innerHTML = '<div class="city-empty">Şəhər tapılmadı</div>';
+                    }
                 })
                 .catch(function() {
-                    console.log("Şəhər axtarışı işləmədi");
+                    box.innerHTML = '<div class="city-empty">API xətası baş verdi</div>';
                 });
-        }, 400);
+        }, 500);
+    });
+
+    document.addEventListener("click", function(e) {
+        if (!input.parentElement.contains(e.target)) {
+            box.style.display = "none";
+        }
     });
 }
 
@@ -1340,17 +1376,68 @@ function loadSavedSession() {
 }
 
 
-setupCitySearch("aFrom");
-setupCitySearch("aTo");
-setupCitySearch("rFrom");
-setupCitySearch("rTo");
-loadSavedSession();
-updateCounters();
 
+function saveData() {
+    localStorage.setItem("bf_flights", JSON.stringify(flights));
+    localStorage.setItem("bf_requests", JSON.stringify(requests));
+    localStorage.setItem("bf_ratings", JSON.stringify(flightRatings));
+}
+
+function loadData() {
+    var savedFlights = localStorage.getItem("bf_flights");
+    var savedRequests = localStorage.getItem("bf_requests");
+    var savedRatings = localStorage.getItem("bf_ratings");
+
+    if (savedFlights !== null) {
+        try {
+            flights = JSON.parse(savedFlights);
+        } catch (e) {
+            localStorage.removeItem("bf_flights");
+        }
+    }
+
+    if (savedRequests !== null) {
+        try {
+            requests = JSON.parse(savedRequests);
+        } catch (e) {
+            localStorage.removeItem("bf_requests");
+        }
+    }
+
+    if (savedRatings !== null) {
+        try {
+            flightRatings = JSON.parse(savedRatings);
+        } catch (e) {
+            localStorage.removeItem("bf_ratings");
+        }
+    }
+}
+
+function getSavedRating(flightId) {
+    if (flightRatings[flightId] !== undefined) {
+        return Number(flightRatings[flightId]);
+    }
+
+    return null;
+}
+
+function applySavedRatingsToFlights() {
+    var i = 0;
+
+    while (i < flights.length) {
+        var savedRating = getSavedRating(flights[i].id);
+
+        if (savedRating !== null) {
+            flights[i].rating = savedRating;
+            flights[i].ratingCount = 1;
+        }
+
+        i++;
+    }
+}
 
 function saveRating(flightId, ratingValue) {
     flightRatings[flightId] = ratingValue;
-    localStorage.setItem("bf_ratings", JSON.stringify(flightRatings));
 
     var i = 0;
     while (i < flights.length) {
@@ -1363,37 +1450,30 @@ function saveRating(flightId, ratingValue) {
 
     saveData();
     renderFlights();
-    showToast("Qiymətləndirmə yadda saxlandı", "success");
 }
 
-function getSavedRating(flightId) {
-    if (flightRatings[flightId] !== undefined) {
-        return flightRatings[flightId];
+document.addEventListener("click", function(event) {
+    var star = event.target.closest(".rating-star");
+
+    if (star === null) {
+        return;
     }
 
-    return null;
-}
+    var flightId = Number(star.getAttribute("data-flight"));
+    var ratingValue = Number(star.getAttribute("data-value"));
 
-function buildRatingStars(flightId) {
-    var savedRating = getSavedRating(flightId);
-    var html = '<div class="rating-box">';
-    html = html + '<span>Daşıyıcını qiymətləndir:</span>';
-    html = html + '<div class="rating-stars">';
-
-    var i = 1;
-    while (i <= 5) {
-        var activeClass = "";
-        if (savedRating !== null && i <= savedRating) {
-            activeClass = " active";
-        }
-
-        html = html + '<button class="rating-star' + activeClass + '" onclick="saveRating(' + flightId + ', ' + i + ')">★</button>';
-        i++;
+    if (isNaN(flightId) || isNaN(ratingValue)) {
+        return;
     }
 
-    html = html + '</div>';
-    html = html + '</div>';
+    submitRating(flightId, ratingValue);
+});
 
-    return html;
-}
-
+setupCitySearch("aFrom");
+setupCitySearch("aTo");
+setupCitySearch("rFrom");
+setupCitySearch("rTo");
+loadData();
+applySavedRatingsToFlights();
+loadSavedSession();
+updateCounters();
