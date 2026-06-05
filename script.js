@@ -1,6 +1,7 @@
 var currentUser = null;
 var requests = [];
 var chatMessages = {};
+var flightRatings = {};
 var uploadedFiles = {
     idFront: null,
     idBack: null,
@@ -21,7 +22,7 @@ var flights = [
         ticket: "TK 198",
         weight: 7,
         types: ["Geyim", "Senad", "Derman"],
-        note: "Kicik baglamalar goture bilerem.",
+        note: "Kiçik bağlamalar götürə bilərəm.",
         rating: 4.7,
         ratingCount: 12
     },
@@ -38,7 +39,7 @@ var flights = [
         ticket: "S7 742",
         weight: 5,
         types: ["Senad", "Elektronika"],
-        note: "Kovrek esyalari goture bilerem.",
+        note: "Kövrək əşyaları götürə bilərəm.",
         rating: 4.2,
         ratingCount: 8
     },
@@ -55,7 +56,7 @@ var flights = [
         ticket: "FZ 329",
         weight: 10,
         types: ["Geyim", "Erzaq", "Diger"],
-        note: "5 kq-ya qeder goture bilerem.",
+        note: "5 kq-a qədər götürə bilərəm.",
         rating: 5.0,
         ratingCount: 3
     },
@@ -89,7 +90,7 @@ var flights = [
         ticket: "LH 693",
         weight: 6,
         types: ["Elektronika", "Geyim"],
-        note: "Yalniz kicik qutu goture bilerem.",
+        note: "Yalnız kiçik qutu götürə bilərəm.",
         rating: 4.5,
         ratingCount: 6
     },
@@ -106,7 +107,7 @@ var flights = [
         ticket: "AF 875",
         weight: 4,
         types: ["Senad", "Derman"],
-        note: "Derman ve senad gonderenlere ustunluk verirem.",
+        note: "Dərman və sənəd göndərənlərə üstünlük verirəm.",
         rating: 4.8,
         ratingCount: 15
     },
@@ -123,7 +124,7 @@ var flights = [
         ticket: "KL 456",
         weight: 9,
         types: ["Geyim", "Erzaq", "Diger"],
-        note: "Her nov esya goture bilerem.",
+        note: "Hər növ əşya götürə bilərəm.",
         rating: 3.9,
         ratingCount: 4
     }
@@ -412,7 +413,6 @@ function doSignup() {
 
 function enterApp() {
     localStorage.setItem("bf_current_user", JSON.stringify(currentUser));
-    loadData();
     document.getElementById("authScreen").style.display = "none";
     document.getElementById("appScreen").classList.add("visible");
 
@@ -601,7 +601,6 @@ function addFlight() {
     };
 
     flights.unshift(newFlight);
-    saveData();
 
     document.getElementById("aFrom").value   = "";
     document.getElementById("aTo").value     = "";
@@ -652,7 +651,6 @@ function sendRequest() {
     };
 
     requests.push(newRequest);
-    saveData();
 
     document.getElementById("rFrom").value   = "";
     document.getElementById("rTo").value     = "";
@@ -781,7 +779,7 @@ function buildCard(flight) {
 
     var weightBadge = "";
     if (isReal === false) {
-        weightBadge = '<span class="badge badge-green"><i class="ti ti-weight"></i> ' + flight.weight + ' kq bos</span>';
+        weightBadge = '<span class="badge badge-green"><i class="ti ti-weight"></i> ' + flight.weight + ' kq boş</span>';
     }
 
     var footerBtn = "";
@@ -790,7 +788,7 @@ function buildCard(flight) {
     } else if (isReal === true) {
         footerBtn = '<span style="font-size:12px;color:var(--text-light);font-style:italic">Real ucus melumatidir</span>';
     } else {
-        footerBtn = '<button class="contact-btn" onclick="openContact(' + flight.id + ')"><i class="ti ti-phone"></i> Elaqe saxla</button>';
+        footerBtn = '<button class="contact-btn" onclick="openContact(' + flight.id + ')"><i class="ti ti-phone"></i> Əlaqə saxla</button>';
     }
 
     var card = "";
@@ -816,7 +814,7 @@ function buildCard(flight) {
     card = card +             '<div class="user-avatar-sm">' + flight.initials + '</div>';
     card = card +             '<div>';
     card = card +                 '<div class="user-name">' + flight.name + ' ' + ownerBadge + '</div>';
-    card = card +                 '<div class="user-verified"><i class="ti ti-shield-check"></i> Yoxlanilmis istifadeci</div>';
+    card = card +                 '<div class="user-verified"><i class="ti ti-shield-check"></i> Yoxlanılmış istifadəçi</div>';
     card = card +             '</div>';
     card = card +         '</div>';
     card = card +         footerBtn;
@@ -839,10 +837,9 @@ function deleteFlight(id) {
     }
 
     flights = newList;
-    saveData();
     updateCounters();
     renderFlights();
-    showToast("Ucus silindi");
+    showToast("Uçuş silindi");
 }
 
 
@@ -919,10 +916,9 @@ function deleteRequest(id) {
     }
 
     requests = newList;
-    saveData();
     updateCounters();
     renderRequests();
-    showToast("Teleb silindi");
+    showToast("Tələb silindi");
 }
 
 
@@ -961,13 +957,13 @@ function openContact(id) {
     bodyHTML = bodyHTML + '<div class="modal-row"><i class="ti ti-plane"></i> ' + flight.from + ' → ' + flight.to + '</div>';
     bodyHTML = bodyHTML + '<div class="modal-row"><i class="ti ti-calendar"></i> ' + formatDate(flight.date) + ' — saat ' + flight.time + '</div>';
     bodyHTML = bodyHTML + '<div class="modal-row"><i class="ti ti-ticket"></i> Bilet: <strong>' + flight.ticket + '</strong></div>';
-    bodyHTML = bodyHTML + '<div class="modal-row"><i class="ti ti-weight"></i> Bos ceki: <strong>' + flight.weight + ' kq</strong></div>';
-    bodyHTML = bodyHTML + '<div class="modal-row"><i class="ti ti-package"></i> Qebul edir: ' + flight.types.join(", ") + '</div>';
+    bodyHTML = bodyHTML + '<div class="modal-row"><i class="ti ti-weight"></i> Boş çəki: <strong>' + flight.weight + ' kq</strong></div>';
+    bodyHTML = bodyHTML + '<div class="modal-row"><i class="ti ti-package"></i> Qəbul edir: ' + flight.types.join(", ") + '</div>';
     bodyHTML = bodyHTML + noteRow;
     bodyHTML = bodyHTML + ratingRow;
 
     bodyHTML = bodyHTML + '<div id="contactActions" style="display:flex;gap:8px;margin-top:16px">';
-    bodyHTML = bodyHTML +     '<button class="btn btn-primary" style="flex:1" onclick="startChat(' + flight.id + ')"><i class="ti ti-message"></i> Elaqe saxla</button>';
+    bodyHTML = bodyHTML +     '<button class="btn btn-primary" style="flex:1" onclick="startChat(' + flight.id + ')"><i class="ti ti-message"></i> Əlaqə saxla</button>';
     bodyHTML = bodyHTML +     '<button class="btn btn-outline" style="flex:1" onclick="closeModal()"><i class="ti ti-x"></i> Baghla</button>';
     bodyHTML = bodyHTML + '</div>';
 
@@ -1245,8 +1241,8 @@ function formatDate(str) {
 }
 
 
-// Şəhər axtarışı üçün autocomplete funksiyası
-// Bu hissə yalnız API ilə işləyir
+// Şəhər axtarışı üçün sadə API funksiyası
+// İstifadəçi 2 hərf yazandan sonra uyğun şəhərlər datalist kimi çıxır
 function setupCitySearch(inputId) {
     var input = document.getElementById(inputId);
 
@@ -1254,15 +1250,18 @@ function setupCitySearch(inputId) {
         return;
     }
 
+    var listId = inputId + "List";
+    input.setAttribute("list", listId);
     input.setAttribute("autocomplete", "off");
 
-    var parent = input.parentElement;
-    parent.style.position = "relative";
+    var oldList = document.getElementById(listId);
+    if (oldList !== null) {
+        oldList.remove();
+    }
 
-    var box = document.createElement("div");
-    box.className = "city-suggest-box";
-    box.style.display = "none";
-    parent.appendChild(box);
+    var dataList = document.createElement("datalist");
+    dataList.id = listId;
+    document.body.appendChild(dataList);
 
     var timer = null;
 
@@ -1274,38 +1273,26 @@ function setupCitySearch(inputId) {
         }
 
         if (searchText.length < 2) {
-            box.innerHTML = "";
-            box.style.display = "none";
+            dataList.innerHTML = "";
             return;
         }
 
-        box.innerHTML = '<div class="city-suggest-empty">Axtarılır...</div>';
-        box.style.display = "block";
-
         timer = setTimeout(function() {
-            var url = "https://nominatim.openstreetmap.org/search?format=json&limit=8&addressdetails=1&accept-language=az&q=" + encodeURIComponent(searchText);
+            var url = "https://nominatim.openstreetmap.org/search?format=json&limit=6&addressdetails=1&featuretype=city&q=" + encodeURIComponent(searchText);
 
             fetch(url)
                 .then(function(response) {
                     return response.json();
                 })
                 .then(function(data) {
-                    box.innerHTML = "";
-
-                    if (!data || data.length === 0) {
-                        box.innerHTML = '<div class="city-suggest-empty">Şəhər tapılmadı</div>';
-                        box.style.display = "block";
-                        return;
-                    }
+                    dataList.innerHTML = "";
 
                     var addedCities = [];
-                    var count = 0;
                     var i = 0;
 
-                    while (i < data.length && count < 6) {
+                    while (i < data.length) {
                         var address = data[i].address || {};
                         var city = "";
-                        var country = "";
 
                         if (address.city) {
                             city = address.city;
@@ -1313,86 +1300,25 @@ function setupCitySearch(inputId) {
                             city = address.town;
                         } else if (address.village) {
                             city = address.village;
-                        } else if (address.municipality) {
-                            city = address.municipality;
-                        } else if (address.county) {
-                            city = address.county;
-                        }
-
-                        if (address.country) {
-                            country = address.country;
+                        } else if (address.state) {
+                            city = address.state;
                         }
 
                         if (city !== "" && addedCities.indexOf(city) === -1) {
+                            var option = document.createElement("option");
+                            option.value = city;
+                            dataList.appendChild(option);
                             addedCities.push(city);
-                            count++;
-
-                            var item = document.createElement("div");
-                            item.className = "city-suggest-item";
-
-                            if (country !== "") {
-                                item.innerHTML = "<strong>" + city + "</strong><span>" + country + "</span>";
-                            } else {
-                                item.innerHTML = "<strong>" + city + "</strong><span></span>";
-                            }
-
-                            item.onclick = function() {
-                                input.value = this.querySelector("strong").textContent;
-                                box.innerHTML = "";
-                                box.style.display = "none";
-                            };
-
-                            box.appendChild(item);
                         }
 
                         i++;
                     }
-
-                    if (count === 0) {
-                        box.innerHTML = '<div class="city-suggest-empty">Şəhər tapılmadı</div>';
-                    }
-
-                    box.style.display = "block";
                 })
                 .catch(function() {
-                    box.innerHTML = '<div class="city-suggest-empty">API xətası baş verdi</div>';
-                    box.style.display = "block";
+                    console.log("Şəhər axtarışı işləmədi");
                 });
-        }, 500);
+        }, 400);
     });
-
-    document.addEventListener("click", function(e) {
-        if (parent.contains(e.target) === false) {
-            box.style.display = "none";
-        }
-    });
-}
-
-function saveData() {
-    localStorage.setItem("bf_flights", JSON.stringify(flights));
-    localStorage.setItem("bf_requests", JSON.stringify(requests));
-}
-
-
-function loadData() {
-    var savedFlights = localStorage.getItem("bf_flights");
-    var savedRequests = localStorage.getItem("bf_requests");
-
-    if (savedFlights !== null) {
-        try {
-            flights = JSON.parse(savedFlights);
-        } catch (e) {
-            localStorage.removeItem("bf_flights");
-        }
-    }
-
-    if (savedRequests !== null) {
-        try {
-            requests = JSON.parse(savedRequests);
-        } catch (e) {
-            localStorage.removeItem("bf_requests");
-        }
-    }
 }
 
 
@@ -1420,3 +1346,54 @@ setupCitySearch("rFrom");
 setupCitySearch("rTo");
 loadSavedSession();
 updateCounters();
+
+
+function saveRating(flightId, ratingValue) {
+    flightRatings[flightId] = ratingValue;
+    localStorage.setItem("bf_ratings", JSON.stringify(flightRatings));
+
+    var i = 0;
+    while (i < flights.length) {
+        if (flights[i].id === flightId) {
+            flights[i].rating = ratingValue;
+            flights[i].ratingCount = 1;
+        }
+        i++;
+    }
+
+    saveData();
+    renderFlights();
+    showToast("Qiymətləndirmə yadda saxlandı", "success");
+}
+
+function getSavedRating(flightId) {
+    if (flightRatings[flightId] !== undefined) {
+        return flightRatings[flightId];
+    }
+
+    return null;
+}
+
+function buildRatingStars(flightId) {
+    var savedRating = getSavedRating(flightId);
+    var html = '<div class="rating-box">';
+    html = html + '<span>Daşıyıcını qiymətləndir:</span>';
+    html = html + '<div class="rating-stars">';
+
+    var i = 1;
+    while (i <= 5) {
+        var activeClass = "";
+        if (savedRating !== null && i <= savedRating) {
+            activeClass = " active";
+        }
+
+        html = html + '<button class="rating-star' + activeClass + '" onclick="saveRating(' + flightId + ', ' + i + ')">★</button>';
+        i++;
+    }
+
+    html = html + '</div>';
+    html = html + '</div>';
+
+    return html;
+}
+
