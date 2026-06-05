@@ -333,27 +333,27 @@ function doSignup() {
     }
 
     if (pass !== pass2) {
-        showToast("Sifreler uygun gelmir", "danger");
+        showToast("Şifrələr uyğun gəlmir", "danger");
         return;
     }
 
     if (pass.length < 6) {
-        showToast("Sifre en az 6 simvol olmalidir", "warn");
+        showToast("Şifrə ən az 6 simvol olmalıdır", "warn");
         return;
     }
 
     if (uploadedFiles.idFront === null || uploadedFiles.idBack === null) {
-        showToast("Sexsiyyet vesiqenizin her iki uzunu yukleyin", "warn");
+        showToast("Şəxsiyyət vəsiqənizin hər iki üzünü yükləyin", "warn");
         return;
     }
 
     if (uploadedFiles.idFront.name === uploadedFiles.idBack.name) {
-        showToast("On uz ve arxa uz ucun ferqli sekiller yukleyin", "warn");
+        showToast("Ön üz və arxa üz üçün fərqli şəkillər yükləyin", "warn");
         return;
     }
 
     if (agree === false) {
-        showToast("Melumatların ishlenmesine raziliq verin", "warn");
+        showToast("Məlumatların işlənməsinə razılıq verin", "warn");
         return;
     }
 
@@ -387,7 +387,7 @@ function doSignup() {
     }
 
     if (alreadyExists === true) {
-        showToast("Bu e-poct artiq qeydiyyatdadir", "danger");
+        showToast("Bu e-poçt artıq qeydiyyatdadır", "danger");
         return;
     }
 
@@ -395,7 +395,7 @@ function doSignup() {
     localStorage.setItem("bf_users", JSON.stringify(userList));
 
     currentUser = newUser;
-    showToast("Qeydiyyat ugurla tamamlandi!", "success");
+    showToast("Qeydiyyat uğurla tamamlandı!", "success");
     setTimeout(enterApp, 800);
 }
 
@@ -423,7 +423,7 @@ function doLogout() {
     document.getElementById("appScreen").classList.remove("visible");
     document.getElementById("authScreen").style.display = "flex";
     switchTab("browse");
-    showToast("Hesabdan cixdiniz");
+    showToast("Hesabdan çıxdınız");
 }
 
 
@@ -473,14 +473,14 @@ function fileChosen(input, key, areaId, prevId) {
     }
 
     if (file.size > 5 * 1024 * 1024) {
-        showToast("Fayl 5 MB-dan boyukdur", "warn");
+        showToast("Fayl 5 MB-dan böyükdür", "warn");
         input.value = "";
         return;
     }
 
     if (key === "idBack") {
         if (uploadedFiles.idFront !== null && file.name === uploadedFiles.idFront.name) {
-            showToast("On uz ve arxa uz ucun ferqli sekiller yukleyin", "warn");
+            showToast("Ön üz və arxa üz üçün fərqli şəkillər yükləyin", "warn");
             input.value = "";
             return;
         }
@@ -488,7 +488,7 @@ function fileChosen(input, key, areaId, prevId) {
 
     if (key === "idFront") {
         if (uploadedFiles.idBack !== null && file.name === uploadedFiles.idBack.name) {
-            showToast("On uz ve arxa uz ucun ferqli sekiller yukleyin", "warn");
+            showToast("Ön üz və arxa üz üçün fərqli şəkillər yükləyin", "warn");
             input.value = "";
             return;
         }
@@ -561,12 +561,12 @@ function addFlight() {
     }
 
     if (from === "" || to === "" || date === "" || time === "" || ticket === "" || isNaN(weight)) {
-        showToast("Butun mecburi saheleri doldurun", "warn");
+        showToast("Bütün məcburi sahələri doldurun", "warn");
         return;
     }
 
     if (types.length === 0) {
-        showToast("En az 1 esya novu secin", "warn");
+        showToast("ən az 1 əşya növü seçin", "warn");
         return;
     }
 
@@ -607,7 +607,7 @@ function addFlight() {
     }
 
     updateCounters();
-    showToast("Ucusunuz elave edildi! ✈️", "success");
+    showToast("Uçuşunuz əlavə edildi! ", "success");
     switchTab("browse");
     renderFlights();
 }
@@ -621,7 +621,7 @@ function sendRequest() {
     var desc   = document.getElementById("rDesc").value.trim();
 
     if (from === "" || to === "" || type === "" || weight === "" || desc === "") {
-        showToast("Butun mecburi saheleri doldurun", "warn");
+        showToast("Bütün məcburi sahələri doldurun", "warn");
         return;
     }
 
@@ -650,7 +650,7 @@ function sendRequest() {
     clearFile("itemImg", "ua3", "prev3");
     updateCounters();
     renderRequests();
-    showToast("Telebiniz gonderildi!", "success");
+    showToast("Tələbiniz göndərildi!", "success");
     switchTab("myRequests");
 }
 
@@ -712,7 +712,7 @@ function renderFlights() {
     var container = document.getElementById("flightList");
 
     if (filteredList.length === 0) {
-        container.innerHTML = '<div class="empty-state"><i class="ti ti-mood-empty"></i><p>Uygun ucus tapilmadi.</p></div>';
+        container.innerHTML = '<div class="empty-state"><i class="ti ti-mood-empty"></i><p>Uyğun uçuş tapılmadı.</p></div>';
         return;
     }
 
@@ -753,7 +753,7 @@ function buildCard(flight) {
 
     var realBadge = "";
     if (isReal === true) {
-        realBadge = '<span class="badge badge-purple"><i class="ti ti-satellite"></i> Canli OpenSky</span>';
+        realBadge = '<span class="badge badge-purple"><i class="ti ti-satellite"></i> Canlı OpenSky</span>';
     }
 
     var noteHTML = "";
@@ -845,7 +845,7 @@ function renderRequests() {
     }
 
     if (myList.length === 0) {
-        container.innerHTML = '<div class="empty-state"><i class="ti ti-inbox"></i><p>Hele hec bir teleb gondermediniz.</p></div>';
+        container.innerHTML = '<div class="empty-state"><i class="ti ti-inbox"></i><p>Hələ heç bir tələb göndərmədiniz.</p></div>';
         return;
     }
 
@@ -1023,7 +1023,7 @@ function renderChatMessages(flightId) {
     }
 
     if (messages.length === 0) {
-        container.innerHTML = '<p style="text-align:center;font-size:12px;color:var(--text-light);padding:10px">Hele mesaj yoxdur. Salam deyin! 👋</p>';
+        container.innerHTML = '<p style="text-align:center;font-size:12px;color:var(--text-light);padding:10px">Hələ mesaj yoxdur. Salam deyin! </p>';
         return;
     }
 
@@ -1135,7 +1135,7 @@ function submitRating(flightId, value) {
     flight.ratingCount = flight.ratingCount + 1;
     flight.rating      = parseFloat((newTotal / flight.ratingCount).toFixed(1));
 
-    showToast("Reytinqiniz ucun teshekkur! ⭐", "success");
+    showToast("Reytinqiniz üçün təşəkkür! ", "success");
     closeModal();
     renderFlights();
 }
@@ -1153,7 +1153,7 @@ function submitSupport() {
     var msg     = document.getElementById("supMsg").value.trim();
 
     if (name === "" || email === "" || subject === "" || msg === "") {
-        showToast("Butun saheleri doldurun", "warn");
+        showToast("Bütün sahələri doldurun", "warn");
         return;
     }
 
@@ -1168,7 +1168,7 @@ function submitSupport() {
         document.getElementById("supportSuccess").style.display = "none";
     }, 5000);
 
-    showToast("Muracietiniz gonderildi! Tezlikle cavab verilecek ✅", "success");
+    showToast("Müraciətiniz göndərildi! Tezliklə cavab veriləcək ", "success");
 }
 
 
