@@ -560,7 +560,7 @@ function addFlight() {
         i++;
     }
 
-    if (from === "" || to === "" || date === "" || time === "" || ticket === "" || isNaN(weight)) {
+    if (from === "" || to === "" || date === "" || time === "" || isNaN(weight)) {
         showToast("Bütün məcburi sahələri doldurun", "warn");
         return;
     }
