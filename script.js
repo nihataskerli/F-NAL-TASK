@@ -326,7 +326,7 @@ function doSignup() {
         return;
     }
 
-    var isGmail = /^[a-zA-Z0-9._%+-]+@$/.test(email);
+    var isGmail = /^[a-zA-Z0-9._%+-]+@gmail.com$/.test(email);
     if (isGmail === false) {
         showToast("Düzgün mail yazmağınız xahiş olunur", "warn");
         return;
