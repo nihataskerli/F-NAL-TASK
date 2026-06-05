@@ -291,7 +291,13 @@ function doLogin() {
         return;
     }
 
-    var userList = JSON.parse(saved);
+    var userList = [];
+
+    try {
+        userList = JSON.parse(saved) || [];
+    } catch (e) {
+        userList = [];
+    }
     var found    = null;
     var i        = 0;
 
@@ -373,7 +379,11 @@ function doSignup() {
     var userList = [];
 
     if (saved !== null) {
-        userList = JSON.parse(saved);
+        try {
+            userList = JSON.parse(saved) || [];
+        } catch (e) {
+            userList = [];
+        }
     }
 
     var alreadyExists = false;
@@ -401,6 +411,7 @@ function doSignup() {
 
 
 function enterApp() {
+    localStorage.setItem("bf_current_user", JSON.stringify(currentUser));
     document.getElementById("authScreen").style.display = "none";
     document.getElementById("appScreen").classList.add("visible");
 
@@ -413,12 +424,11 @@ function enterApp() {
 
     updateCounters();
     renderFlights();
-    getUserLocation();
-    loadRealFlights();
 }
 
 
 function doLogout() {
+    localStorage.removeItem("bf_current_user");
     currentUser = null;
     document.getElementById("appScreen").classList.remove("visible");
     document.getElementById("authScreen").style.display = "flex";
@@ -547,7 +557,8 @@ function addFlight() {
     var to     = document.getElementById("aTo").value.trim();
     var date   = document.getElementById("aDate").value;
     var time   = document.getElementById("aTime").value;
-    var ticket = document.getElementById("aTicket").value.trim();
+    // HTML-də ayrıca bilet nömrəsi inputu yoxdur, ona görə avtomatik kod yaradırıq
+    var ticket = "BF-" + Date.now();
     var weight = parseFloat(document.getElementById("aWeight").value);
     var note   = document.getElementById("aNote").value.trim();
 
@@ -594,7 +605,6 @@ function addFlight() {
     document.getElementById("aTo").value     = "";
     document.getElementById("aDate").value   = "";
     document.getElementById("aTime").value   = "";
-    document.getElementById("aTicket").value = "";
     document.getElementById("aWeight").value = "";
     document.getElementById("aNote").value   = "";
 
@@ -1230,4 +1240,146 @@ function formatDate(str) {
 }
 
 
+
+// Şəhər axtarışı üçün custom autocomplete
+// 2 hərf yazandan sonra inputun altında şəhər siyahısı çıxır
+function setupCitySearch(inputId) {
+    var input = document.getElementById(inputId);
+
+    if (input === null) {
+        return;
+    }
+
+    input.setAttribute("autocomplete", "off");
+
+    var box = document.createElement("div");
+    box.className = "city-suggestions";
+    box.style.display = "none";
+
+    input.parentNode.style.position = "relative";
+    input.parentNode.appendChild(box);
+
+    var timer = null;
+
+    input.addEventListener("input", function() {
+        var searchText = input.value.trim();
+
+        if (timer !== null) {
+            clearTimeout(timer);
+        }
+
+        if (searchText.length < 2) {
+            box.innerHTML = "";
+            box.style.display = "none";
+            return;
+        }
+
+        box.innerHTML = '<div class="city-loading">Axtarılır...</div>';
+        box.style.display = "block";
+
+        timer = setTimeout(function() {
+            var url = "https://nominatim.openstreetmap.org/search?format=json&limit=8&addressdetails=1&q=" + encodeURIComponent(searchText);
+
+            fetch(url)
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    box.innerHTML = "";
+
+                    var addedCities = [];
+                    var i = 0;
+
+                    while (i < data.length) {
+                        var address = data[i].address || {};
+                        var city = "";
+                        var country = "";
+
+                        if (address.city) {
+                            city = address.city;
+                        } else if (address.town) {
+                            city = address.town;
+                        } else if (address.village) {
+                            city = address.village;
+                        } else if (address.municipality) {
+                            city = address.municipality;
+                        } else if (address.state) {
+                            city = address.state;
+                        }
+
+                        if (address.country) {
+                            country = address.country;
+                        }
+
+                        if (city !== "" && addedCities.indexOf(city + country) === -1) {
+                            var item = document.createElement("div");
+                            item.className = "city-item";
+
+                            if (country !== "") {
+                                item.innerHTML = '<strong>' + city + '</strong><span>' + country + '</span>';
+                            } else {
+                                item.innerHTML = '<strong>' + city + '</strong>';
+                            }
+
+                            item.onclick = function() {
+                                var selectedCity = this.querySelector("strong").textContent;
+                                input.value = selectedCity;
+                                box.innerHTML = "";
+                                box.style.display = "none";
+                            };
+
+                            box.appendChild(item);
+                            addedCities.push(city + country);
+                        }
+
+                        i++;
+                    }
+
+                    if (box.innerHTML === "") {
+                        box.innerHTML = '<div class="city-loading">Şəhər tapılmadı</div>';
+                    }
+                })
+                .catch(function() {
+                    box.innerHTML = '<div class="city-loading">Axtarış alınmadı</div>';
+                });
+        }, 350);
+    });
+
+    document.addEventListener("click", function(event) {
+        if (input.parentNode.contains(event.target) === false) {
+            box.style.display = "none";
+        }
+    });
+
+    input.addEventListener("focus", function() {
+        if (box.innerHTML !== "" && input.value.trim().length >= 2) {
+            box.style.display = "block";
+        }
+    });
+}
+
+
+function loadSavedSession() {
+    var savedUser = localStorage.getItem("bf_current_user");
+
+    if (savedUser === null) {
+        return;
+    }
+
+    try {
+        currentUser = JSON.parse(savedUser);
+        if (currentUser !== null && currentUser.email) {
+            enterApp();
+        }
+    } catch (e) {
+        localStorage.removeItem("bf_current_user");
+    }
+}
+
+
+setupCitySearch("aFrom");
+setupCitySearch("aTo");
+setupCitySearch("rFrom");
+setupCitySearch("rTo");
+loadSavedSession();
 updateCounters();
