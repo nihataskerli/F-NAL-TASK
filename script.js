@@ -218,7 +218,7 @@ function loadRealFlights() {
                         ticket:      ticket,
                         weight:      0,
                         types:       [],
-                        note:        "Bu melumat OpenSky Network API-den real vaxtda alinir.",
+                        note:        "Bu məlumat OpenSky Network API-dən real vaxtda alınır.",
                         rating:      0,
                         ratingCount: 0,
                         isReal:      true
@@ -230,7 +230,7 @@ function loadRealFlights() {
                 i++;
             }
 
-            statusEl.innerHTML = '<i class="ti ti-circle-check"></i> ' + addedCount + ' real ucus yuklendi (OpenSky API)';
+            statusEl.innerHTML = '<i class="ti ti-circle-check"></i> ' + addedCount + ' real uçuş yükləndi (OpenSky API)';
             setTimeout(function() {
                 statusEl.style.display = "none";
             }, 4000);
@@ -239,7 +239,7 @@ function loadRealFlights() {
             updateCounters();
         })
         .catch(function(error) {
-            statusEl.innerHTML = '<i class="ti ti-alert-circle"></i> Real ucus melumati yuklenilmedi.';
+            statusEl.innerHTML = '<i class="ti ti-alert-circle"></i> Real uçuş məlumatı yüklənilmədi.';
             setTimeout(function() {
                 statusEl.style.display = "none";
             }, 4000);
@@ -267,7 +267,7 @@ function doLogin() {
     var pass  = document.getElementById("lPass").value;
 
     if (email === "" || pass === "") {
-        showToast("E-poct ve sifre daxil edin", "warn");
+        showToast("E-poçt və şifrə daxil edin", "warn");
         return;
     }
 
@@ -287,7 +287,7 @@ function doLogin() {
     var saved = localStorage.getItem("bf_users");
 
     if (saved === null) {
-        showToast("E-poct ve ya sifre yanlisd ir", "danger");
+        showToast("E-poçt və ya şifrə yanlışdır", "danger");
         return;
     }
 
@@ -303,7 +303,7 @@ function doLogin() {
     }
 
     if (found === null) {
-        showToast("E-poct ve ya sifre yanlisd ir", "danger");
+        showToast("E-poçt və ya şifrə yanlışdır", "danger");
         return;
     }
 
@@ -322,13 +322,13 @@ function doSignup() {
     var agree     = document.getElementById("agreeTerms").checked;
 
     if (firstName === "" || lastName === "" || email === "" || phone === "" || pass === "") {
-        showToast("Butun mecburi saheleri doldurun", "warn");
+        showToast("Bütün məcburi sahələri doldurun", "warn");
         return;
     }
 
-    var isGmail = /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
+    var isGmail = /^[a-zA-Z0-9._%+-]+@$/.test(email);
     if (isGmail === false) {
-        showToast("Yalniz @gmail.com e-poct qebul edilir", "warn");
+        showToast("Düzgün mail yazmağınız xahiş olunur", "warn");
         return;
     }
 

@@ -18,17 +18,9 @@
         <div class="auth-card">
 
             <div class="auth-header">
-                <div class="logo-box">
-                    <svg width="50" height="50" viewBox="0 0 60 60" fill="none">
-                        <rect width="60" height="60" rx="18" fill="rgba(255,255,255,0.18)"></rect>
-                        <g transform="translate(8,10)">
-                            <path d="M6 26 L20 12 C21 11 23 11 24 12 L38 8 C40 7 41 9 40 11 L34 22 L38 24 C39 25 39 27 38 28 L32 34 C31 35 29 35 28 34 L26 30 L16 36 C14 37 12 36 12 34 L14 26 Z" fill="white"></path>
-                            <path d="M6 30 L10 32 L6 34 L2 32 Z" fill="white" opacity="0.5"></path>
-                        </g>
-                    </svg>
-                </div>
+              
                 <h1>BarterFly</h1>
-                <p>Uçanlarla göndər</p>
+                
             </div>
 
             <div class="auth-tabs">
@@ -41,7 +33,7 @@
 
                 <div class="form-group">
                     <label for="lEmail">E-poçt</label>
-                    <input type="email" id="lEmail" placeholder="sizin@gmail.com">
+                    <input type="email" id="lEmail" >
                 </div>
 
                 <div class="form-group">
@@ -51,7 +43,7 @@
 
                 <button class="btn btn-blue" onclick="doLogin()">Daxil ol</button>
 
-                <p class="small-text">Nümunə: demo@test.com / 123456</p>
+                
                 <p class="switch-text">Hesabın yoxdur? <a onclick="switchAuthTab('signup')">Qeydiyyat</a></p>
 
             </div>
@@ -67,17 +59,17 @@
                 <div class="two-col">
                     <div class="form-group">
                         <label for="sAd">Ad</label>
-                        <input type="text" id="sAd" placeholder="Əli">
+                        <input type="text" id="sAd">
                     </div>
                     <div class="form-group">
                         <label for="sSoyad">Soyad</label>
-                        <input type="text" id="sSoyad" placeholder="Əliyev">
+                        <input type="text" id="sSoyad" >
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="sEmail">E-poçt <span class="blue-note">(yalnız @gmail.com)</span></label>
-                    <input type="email" id="sEmail" placeholder="sizin@gmail.com">
+                    <label for="sEmail">E-poçt <span class="blue-note"></span></label>
+                    <input type="email" id="sEmail" >
                 </div>
 
                 <div class="form-group">
@@ -157,9 +149,7 @@
 
             <div class="nav-logo" onclick="switchTab('browse')">
                 <div class="nav-icon">
-                    <svg width="18" height="18" viewBox="0 0 44 44" fill="none">
-                        <path d="M4 34 L18 18 C19 17 21 17 22 18 L38 13 C40 12 41 14 40 16 L33 28 L37 30 C38 31 38 33 37 34 L30 41 C29 42 27 42 26 41 L24 37 L13 44 C11 45 9 44 9 42 L11 34 Z" fill="white"></path>
-                    </svg>
+                  
                 </div>
                 <span>BarterFly</span>
             </div>
@@ -282,16 +272,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="aTicket">
-                            Reys nömrəsi
-                            <span class="blue-note">(daxil edin — məlumatlar avtomatik doldurulacaq)</span>
-                        </label>
-                        <div class="input-row">
-                            <input type="text" id="aTicket" placeholder="Nümunə: TK198, FZ329">
-                            <button class="btn btn-outline" onclick="lookupFlight()">
-                                <i class="ti ti-search"></i> Axtar
-                            </button>
-                        </div>
+                       
                         <div id="flightLookupStatus"></div>
                     </div>
 

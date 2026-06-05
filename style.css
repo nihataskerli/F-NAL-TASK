@@ -1095,7 +1095,7 @@ body {
 }
 
 
-/* ===== ANİMASİYA ===== */
+
 
 @keyframes spin {
     from {
@@ -1112,9 +1112,9 @@ body {
 }
 
 
-/* ===== PLANŞETLƏr (600px - 1024px) ===== */
 
-@media (max-width: 1024px) {
+
+@media (max-width: 991px) {
     .main-container {
         max-width: 100%;
         padding: 1.2rem;
@@ -1135,7 +1135,7 @@ body {
 }
 
 
-/* ===== TELEFON (600px-dən aşağı) ===== */
+
 
 @media (max-width: 600px) {
     .navbar {
@@ -1237,9 +1237,9 @@ body {
 }
 
 
-/* ===== ÇOX KİÇİK EKRAN (380px-dən aşağı) ===== */
 
-@media (max-width: 380px) {
+
+@media (max-width: 375px) {
     .tab-btn {
         min-width: 44px;
         font-size: 9px;
